@@ -243,6 +243,30 @@ This point is more of a rathole and a personal preference, probably.
 [FIXME] In Windows one of the two was way easier to extend than the other, but I do not remember which.
         </t>
         <t>
+lorenzo@google.com:  ICMP is harder than UDP to implement; it often requires raw sockets or
+kernel collaboration (e.g., on Linux RDNSS information can be read using
+netlink. UDP is much simpler). On the other hand, I think stateful DHCPv6
+is a more complicated protocol to implement than RAs, with more message
+types and so on.
+        </t>
+        <t>
+jinmei@wide.ad.jp: 
+
+I don't know why Linux uses a non portable API, but I believe
+writing programs handling RA options like RDNSS is no harder than
+writing DHCPv6 client in terms of socket API.  As long as the system
+supports RFC3542 you should be able to write a portable RA "client"
+pretty easily (meaning as easy/hard as writing some UDP client
+program).  For example, FreeBSD's rtsold supports RDNSS and (AFAIK)
+only relies on the RFC3542 APIs.  Also, since DHCP is trickier than
+other UDP applications in some points (it's more sensitive to which
+interface to use, and in some cases you need to make sure the source
+address is link-local, etc), it's quite likely that you'll need
+something like unusual APIs like RFC3542 or some non-portable system
+dependent interface to write a standard-compliant DHCP(v6) client.  
+So, overall, I'd say the programming difficulty regarding UDP (DHCP)
+vs ICMP (RS/RA) is marginal.
+
         </t>
       </section>
       <section anchor="Management" title="Separate vs. unified management">

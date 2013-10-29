@@ -63,16 +63,16 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
      2.4.  Centralized coordination vs. distributed coordination  . .  3
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
-     2.7.  Involvement or not into routing  . . . . . . . . . . . . .  4
+     2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  5
-     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  5
+     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
    3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-   4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  6
-   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  6
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  6
+   4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  7
+   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  7
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  7
 
 1.  Introduction
 
@@ -221,6 +221,22 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
    DHCPv6 in its stateless incarnation also does not keep the state -
    however, in the scenario of the DHCPv6 server sending the RECONFIGURE
+
+
+
+
+
+
+
+
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
    message to the client, DHCPv6 server must keep some knowledge of the
    client - which means it might need to keep some state.
 
@@ -231,12 +247,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
    An RA-based protocol interaction may influence host's routing.  A
    DHCPv6-based interaction today can not influence the host's routing -
-
-
-Yourtchenko              Expires April 30, 2014                 [Page 4]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
    it was specifically denied any and all involvement into routing.
 
    RAs as a mechanism, due to its "multiple sources of truth" nature,
@@ -282,6 +292,11 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    almost any router today can run a DHCPv6 server itself with very
    little problem.
 
+Yourtchenko              Expires April 30, 2014                 [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
 2.9.  Programming: UDP vs.  ICMP
 
    For a random programmer today, coding a server to receive the data on
@@ -289,17 +304,30 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    Disclaimer: the value of "random" was chosen to be "me" for arbitrary
    reasons.
 
-
-
-
-Yourtchenko              Expires April 30, 2014                 [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
-
    This point is more of a rathole and a personal preference, probably.
    [FIXME] In Windows one of the two was way easier to extend than the
    other, but I do not remember which.
+
+   lorenzo@google.com:  ICMP is harder than UDP to implement; it often
+   requires raw sockets or kernel collaboration (e.g., on Linux RDNSS
+   information can be read using netlink.  UDP is much simpler). On the
+   other hand, I think stateful DHCPv6 is a more complicated protocol to
+   implement than RAs, with more message types and so on.
+
+   jinmei@wide.ad.jp: I don't know why Linux uses a non portable API,
+   but I believe writing programs handling RA options like RDNSS is no
+   harder than writing DHCPv6 client in terms of socket API.  As long as
+   the system supports RFC3542 you should be able to write a portable RA
+   "client" pretty easily (meaning as easy/hard as writing some UDP
+   client program).  For example, FreeBSD's rtsold supports RDNSS and
+   (AFAIK) only relies on the RFC3542 APIs.  Also, since DHCP is
+   trickier than other UDP applications in some points (it's more
+   sensitive to which interface to use, and in some cases you need to
+   make sure the source address is link-local, etc), it's quite likely
+   that you'll need something like unusual APIs like RFC3542 or some
+   non-portable system dependent interface to write a standard-compliant
+   DHCP(v6) client.  So, overall, I'd say the programming difficulty
+   regarding UDP (DHCP) vs ICMP (RS/RA) is marginal.
 
 2.10.  Separate vs.  unified management
 
@@ -320,6 +348,13 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    configuration mechanisms have their unique strengths and weaknesses,
    and each of them may be "the best" depending on the environment for a
    particular network.
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
 
    Therefore, the host stacks which expect to maximize their chances of
    connectivity when moving between different networks, will achieve
@@ -350,12 +385,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
 Author's Address
 
-
-Yourtchenko              Expires April 30, 2014                 [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
-
    Andrew
    cisco
    7a de Kleetlaan
@@ -364,35 +393,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
