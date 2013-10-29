@@ -143,6 +143,28 @@ we talk just homogenous standards-compliant well-behaved hosts for simplicity sa
 That's why the title of this section does not use the word "control" but rather uses the word "coordination".
         </t>
       </section>
+      <section anchor="SingleSourceOfTruth" title="Single Source of Truth vs. Multiple sources">
+	<t>
+The DHCPv6 model requires the client to choose only one of the advertise messages that it receives. When using 
+RA, the client can combine information from multiple sources.
+	</t>
+	<t>
+This section is quite intertwined with the previous one (distributed/centralized), and the reasoning for when 
+a particular protocol is "good" or "bad" will be similar - RA based configuration will be best in case the networks
+are not under administration, and the hosts are given a lot of flexibility. 
+	</t>
+	<t>
+On the other hand, DHCPv6 will be useful for the case where there is a need to tightly control the behavior
+of the hosts and have a highly predictable configuration of the network as a whole. Of course, as a tradeoff such
+predictability brings potentially increased fragility.
+	</t>
+	<t>
+An example where this difference might be crucial is a segment with two servers, aware of each other state.
+If server A goes down, then server B, when using RA-based mechanism, can just send a message with the lifetime of zero.
+The DHCPv6-based implementation of this scenario would need to be more involved - if the client trusted the server A
+to begin with, it will not listen to notifications from B - so B will need to spoof A in some way.
+	</t>
+      </section>
       <section anchor="ServerSideState" title="The amount of server-side state">
 	<t>
 RA in its pure form is inherently stateless - there is no per-client information stored on the sending router. 
