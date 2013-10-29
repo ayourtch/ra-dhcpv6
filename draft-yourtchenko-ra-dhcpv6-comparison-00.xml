@@ -164,6 +164,11 @@ If server A goes down, then server B, when using RA-based mechanism, can just se
 The DHCPv6-based implementation of this scenario would need to be more involved - if the client trusted the server A
 to begin with, it will not listen to notifications from B - so B will need to spoof A in some way.
 	</t>
+	<t>
+However, at the same time this ease with which one device can instruct the hosts on behalf of the other can be also
+considered a weakness in a stricter environment - and require additional security measures in place so that a malicious
+host did not impersonate a router.
+	</t>
       </section>
       <section anchor="ServerSideState" title="The amount of server-side state">
 	<t>
