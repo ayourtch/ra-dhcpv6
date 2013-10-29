@@ -231,6 +231,10 @@ who think RA is the single possible candidate for that.
 The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares the fate with routing". However, this distinction is merely because of the decision to explicitly keep DHCPv6 away from routing - so can not be considered a true property of the protocol.
 	</t>
 	<t>
+brian@innovationslab.net: you do not know that the DHCPv6 message you received came from a
+router or a server.
+	</t>
+	<t>
 [FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
 	</t>
       </section>
