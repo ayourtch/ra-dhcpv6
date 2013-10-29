@@ -64,16 +64,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
-     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
+     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  5
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
-     2.11. Support Complexity . . . . . . . . . . . . . . . . . . . .  7
-   3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  7
-   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  7
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   3.  Arguments for running only a single protocol . . . . . . . . .  7
+     3.1.  Support and Security Complexity  . . . . . . . . . . . . .  7
+   4.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   5.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  7
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  7
+   7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  7
 
 1.  Introduction
 
@@ -110,8 +111,7 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    simply will not get the SLAAC working because the multicast RAs will
    get crunched by the interference.
 
-   Alternatively, in a very mobile environment and the RFC-compliant
-   router, multicast solicited RAs might make a significant portion of
+
 
 
 
@@ -119,6 +119,9 @@ Yourtchenko              Expires April 30, 2014                 [Page 2]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
+
+   Alternatively, in a very mobile environment and the RFC-compliant
+   router, multicast solicited RAs might make a significant portion of
    your traffic - which, due to a difference in modulation, etc.  may
    eat way more bandwidth than if they were sent unicast.
 
@@ -169,15 +172,14 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    gets which address and a curse if you need to account everyone
    strictly.
 
-   NB: address assignment does not mean that the hosts will always use
-
-
 
 
 Yourtchenko              Expires April 30, 2014                 [Page 3]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
+
+   NB: address assignment does not mean that the hosts will always use
    those addresses - e.g.  it's perfectly possible to statically
    configure a different address, but we talk just homogenous standards-
    compliant well-behaved hosts for simplicity sake).
@@ -228,8 +230,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    client - which means it might need to keep some state.
 
    [FIXME] Further experimentation needed to test how it actually works
-
-
 
 
 
@@ -286,7 +286,7 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
    [FIXME]: This section needs further debates, clarifications, and a
    rewrite.  I am not sure I correctly captured the essence.  The
-
+   arguments are welcome!
 
 
 
@@ -295,8 +295,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 Yourtchenko              Expires April 30, 2014                 [Page 5]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
-
-   arguments are welcome!
 
 2.8.  Server locality
 
@@ -347,26 +345,26 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    have their work go away and similarly "router" guys are happy to get
    rid of yet another point of coordination and argument.
 
-
-
-
-
-Yourtchenko              Expires April 30, 2014                 [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
-
    This is where the "I hate $protocol" could definitely pop up -
    because for one side it may be the media interworking that is a
    crucial factor, while for the other side it is the amount of state
    held on the server - thus the agreement would never be achieved
    because they are arguing about different things.
 
-2.11.  Support Complexity
+Yourtchenko              Expires April 30, 2014                 [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
 
-   This section does not compare DHCPv6 with RA, but rather captures the
-   reason for the strong preference of having only one protocol deal
-   with the entirety of the operations.
+
+3.  Arguments for running only a single protocol
+
+   The "Comparison" section aims to highlight the various differences,
+   and implicitly show the reasoning to have two protocols implemented
+   in the nodes.  This section enumerates the reasons for a network
+   operator to strongly prefer having only one of these two protocols in
+   operation on the network at any point in time.
+
+3.1.  Support and Security Complexity
 
    nick@inex.ie: this brings up another important issue, namely source
    address validation.  I'm not sure if it's relevant to bring this up
@@ -376,7 +374,7 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    operators we are very exposed to rogue RAs and rogue DHCPv6 packets
    flying around networks.
 
-3.  Conclusion
+4.  Conclusion
 
    This document has attempted to show that both DHCPv6 and RA based
    configuration mechanisms have their unique strengths and weaknesses,
@@ -394,28 +392,28 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    hosts - but doing so usually incurs the overhead, which should be
    evaluated by the network administrators.
 
-4.  Acknowledgements
+5.  Acknowledgements
 
    Thanks to Ted Lemon for triggering the creation of this document.
 
    Thanks to Lorenzo Colitti for the valuable discussion about the
    server-side state and the client-server initiated interactions.
 
-5.  IANA Considerations
+6.  IANA Considerations
 
-6.  Security Considerations
+7.  Security Considerations
 
-7.  References
+8.  References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+Author's Address
 
 Yourtchenko              Expires April 30, 2014                 [Page 7]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
-
-Author's Address
 
    Andrew
    cisco
@@ -425,6 +423,8 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
+
+
 
 
 

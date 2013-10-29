@@ -300,11 +300,14 @@ the other side it is the amount of state held on the server - thus the agreement
 never be achieved because they are arguing about different things.
         </t>
       </section>
-      <section anchor="SupportComplexity" title="Support Complexity">
-	<t>
-This section does not compare DHCPv6 with RA, but rather captures the reason for 
-the strong preference of having only one protocol deal with the entirety of the operations.
-	</t>
+    </section>
+    <section anchor="SingleProtocolArguments" title="Arguments for running only a single protocol">
+      <t>
+The "Comparison" section aims to highlight the various differences, and implicitly show the reasoning
+to have two protocols implemented in the nodes. This section enumerates the reasons for a network
+operator to strongly prefer having only one of these two protocols in operation on the network at any point in time.
+      </t>
+      <section anchor="Complexity" title="Support and Security Complexity">
 	<t>
 nick@inex.ie: this brings up another important issue, namely source address validation.
 
