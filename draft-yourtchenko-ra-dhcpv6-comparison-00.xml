@@ -300,6 +300,21 @@ the other side it is the amount of state held on the server - thus the agreement
 never be achieved because they are arguing about different things.
         </t>
       </section>
+      <section anchor="SupportComplexity" title="Support Complexity">
+	<t>
+This section does not compare DHCPv6 with RA, but rather captures the reason for 
+the strong preference of having only one protocol deal with the entirety of the operations.
+	</t>
+	<t>
+nick@inex.ie: this brings up another important issue, namely source address validation.
+
+I'm not sure if it's relevant to bring this up in your draft, but the
+requirement to handle snooping two new protocols for effective lan source
+address validation seems to be more than most vendors can handle at the
+moment, which means that as operators we are very exposed to rogue RAs and
+rogue DHCPv6 packets flying around networks.
+	</t>
+      </section>
     </section>
     <section anchor="Conclusion" title="Conclusion">
 	<t>
