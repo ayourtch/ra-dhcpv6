@@ -66,7 +66,7 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  4
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  5
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  5
-     2.10. Separate vs. unified management  . . . . . . . . . . . . .  5
+     2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
    3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  6
    4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  6
    5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
@@ -262,6 +262,12 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    proponents of those who want DHCPv6 deal with routing, and those who
    think RA is the single possible candidate for that.
 
+   The other aspect is that because RA ties in the routing and
+   addressing information, one can say "RA shares the fate with
+   routing".  However, this distinction is merely because of the
+   decision to explicitly keep DHCPv6 away from routing - so can not be
+   considered a true property of the protocol.
+
    [FIXME]: This section needs further debates, clarifications, and a
    rewrite.  I am not sure I correctly captured the essence.  The
    arguments are welcome!
@@ -283,12 +289,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    Disclaimer: the value of "random" was chosen to be "me" for arbitrary
    reasons.
 
-   This point is more of a rathole and a personal preference, probably.
-   [FIXME] In Windows one of the two was way easier to extend than the
-   other, but I do not remember which.
-
-2.10.  Separate vs.  unified management
-
 
 
 
@@ -296,6 +296,12 @@ Yourtchenko              Expires April 30, 2014                 [Page 5]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
+
+   This point is more of a rathole and a personal preference, probably.
+   [FIXME] In Windows one of the two was way easier to extend than the
+   other, but I do not remember which.
+
+2.10.  Separate vs.  unified management
 
    If DHCPv4 and routing is managed by the different groups in the
    organization, then conceivably the "server" people will not like to
@@ -343,12 +349,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
 Author's Address
-
-
-
-
-
-
 
 
 Yourtchenko              Expires April 30, 2014                 [Page 6]
