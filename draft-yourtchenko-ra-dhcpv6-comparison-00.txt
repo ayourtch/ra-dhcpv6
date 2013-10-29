@@ -67,7 +67,7 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  5
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
-   3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+   3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  7
    4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  7
    5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  7
    6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
@@ -170,14 +170,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    strictly.
 
    NB: address assignment does not mean that the hosts will always use
-   those addresses - e.g.  it's perfectly possible to statically
-   configure a different address, but we talk just homogenous standards-
-   compliant well-behaved hosts for simplicity sake).
+
+
+
 
 Yourtchenko              Expires April 30, 2014                 [Page 3]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
+   those addresses - e.g.  it's perfectly possible to statically
+   configure a different address, but we talk just homogenous standards-
+   compliant well-behaved hosts for simplicity sake).
 
    That's why the title of this section does not use the word "control"
    but rather uses the word "coordination".
@@ -221,14 +224,11 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
    DHCPv6 in its stateless incarnation also does not keep the state -
    however, in the scenario of the DHCPv6 server sending the RECONFIGURE
+   message to the client, DHCPv6 server must keep some knowledge of the
+   client - which means it might need to keep some state.
 
-
-
-
-
-
-
-
+   [FIXME] Further experimentation needed to test how it actually works
+   in real life implementations.
 
 
 
@@ -237,11 +237,13 @@ Yourtchenko              Expires April 30, 2014                 [Page 4]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
-   message to the client, DHCPv6 server must keep some knowledge of the
-   client - which means it might need to keep some state.
 
-   [FIXME] Further experimentation needed to test how it actually works
-   in real life implementations.
+   jinmei@wide.ad.jp: If you mean the Delayed Authentication Protocol by
+   DHCPv6 authentication, the WIDE DHCPv6 supports it: http://
+   sourceforge.net/projects/wide-dhcpv6/ although I myself have only
+   used it in testing.  I heard some other vendors implemented it, too.
+   (And, for that matter, it also supports the Information Refresh Time
+   option (RFC4242)).
 
 2.7.  Involvement or not into routing
 
@@ -284,6 +286,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
 2.8.  Server locality
 
+
+
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
    Both DHCPv6 and RA are inherently link-local mechanisms, however
    DHCPv6 has a means to "jump" over multiple hops by use of the relays.
    This means RA *has* to be distributed, while DHCPv6 can be both
@@ -291,11 +304,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    because of other benefits that centralized administration brings, but
    almost any router today can run a DHCPv6 server itself with very
    little problem.
-
-Yourtchenko              Expires April 30, 2014                 [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
 2.9.  Programming: UDP vs.  ICMP
 
@@ -342,19 +350,18 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    held on the server - thus the agreement would never be achieved
    because they are arguing about different things.
 
+
+Yourtchenko              Expires April 30, 2014                 [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
 3.  Conclusion
 
    This document has attempted to show that both DHCPv6 and RA based
    configuration mechanisms have their unique strengths and weaknesses,
    and each of them may be "the best" depending on the environment for a
    particular network.
-
-
-
-Yourtchenko              Expires April 30, 2014                 [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
    Therefore, the host stacks which expect to maximize their chances of
    connectivity when moving between different networks, will achieve
@@ -393,13 +400,6 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
-
-
-
-
 
 
 

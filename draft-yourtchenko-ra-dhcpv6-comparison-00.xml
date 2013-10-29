@@ -183,6 +183,19 @@ DHCPv6 server must keep some knowledge of the client - which means it might need
 	<t>
 [FIXME] Further experimentation needed to test how it actually works in real life implementations.
         </t>
+	<t>
+jinmei@wide.ad.jp:
+
+If you mean the Delayed Authentication Protocol by DHCPv6
+authentication, the WIDE DHCPv6 supports it:
+http://sourceforge.net/projects/wide-dhcpv6/
+although I myself have only used it in testing.  I heard some other
+vendors implemented it, too.
+
+(And, for that matter, it also supports the Information Refresh Time
+option (RFC4242)).
+
+	</t>
       </section>
       <section anchor="Routing" title="Involvement or not into routing">
 	<t>
