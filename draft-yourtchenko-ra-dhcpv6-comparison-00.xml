@@ -185,24 +185,38 @@ DHCPv6 server must keep some knowledge of the client - which means it might need
         </t>
       </section>
       <section anchor="Routing" title="Involvement or not into routing">
+	<t>
+An RA-based protocol interaction may influence host's routing. 
+A DHCPv6-based interaction today can not influence the host's routing - 
+it was specifically denied any and all involvement into routing.
+	</t>
         <t>
-RAs are a mechanism to provide some form of reliability for the routing 
-in an independent fashion to the reasonably unsophisticated hosts. 
-DHCPv6 was specifically denied any involvement in the routing.
+RAs as a mechanism, due to its "multiple sources of truth" nature, 
+can allow unsophisticated form of routing resiliency for the hosts.
 	</t>
 	<t>
 While architecturally "pure", the reliability and timing 
 of the routing resiliency provided by the RAs is far below 
-those achieved by FHRP protocols which are used
-in today's networks predominantly.
+those achieved by FHRP protocols - which makes the "distributed routing for unsophisticated hosts" 
+property unusable in the most networks. 
 	</t>
 	<t>
-This might create a dissonance between those who want 
-to ensure RAs are used for routing, and those who do not see 
-any use of them in that regard - with the
-corresponding contention of adding anything 
-routing-related into DHCPv6.
-        </t>
+With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes) 
+- something that is successfully done by DHCPv4 today. This creates an impression that adding this 
+functionality to DHCPv6 would allow to get rid of the RA completely for that use case.
+	</t>
+	<t>
+However, the "single source of truth" nature of DHCPv6 prevents the successful operation in case of 
+multiple servers on the segment supplying different information. RAs in this case may still work.
+	</t>
+	<t>
+Some consider the inability to support this scenario crucial, and some think it is not useful. 
+This creates contention between the proponents of those who want DHCPv6 deal with routing, and those
+who think RA is the single possible candidate for that.
+	</t>
+	<t>
+[FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
+	</t>
       </section>
       <section anchor="ServerLocality" title="Server locality">
         <t>
