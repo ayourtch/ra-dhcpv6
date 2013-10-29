@@ -1,0 +1,353 @@
+
+
+
+Network Working Group                                     A. Yourtchenko
+Internet-Draft                                                     cisco
+Intended status: Informational                          October 29, 2013
+Expires: April 30, 2014
+
+    A comparison between the DHCPv6  and RA based host configuration
+               draft-yourtchenko-ra-dhcpv6-comparison-00
+
+Abstract
+
+   This document attempts to make a balanced comparison between the RA-
+   based and DHCPv6-based host configuration mechanisms.  It compares
+   the two on different aspects - like, underlying media assumptions,
+   coordination, locality, etc.  and highlights the strong and weak
+   sides of both for each scenario.
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on April 30, 2014.
+
+Copyright Notice
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (http://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  2
+   2.  Comparison . . . . . . . . . . . . . . . . . . . . . . . . . .  2
+     2.1.  Interworking with different L2 topologies  . . . . . . . .  2
+
+Yourtchenko              Expires April 30, 2014                 [Page 1]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+     2.2.  Acknowledged vs. Unacknowledged  . . . . . . . . . . . . .  2
+     2.3.  Client initiated vs. server initiated  . . . . . . . . . .  3
+     2.4.  Centralized coordination vs. distributed coordination  . .  3
+     2.5.  The amount of server-side state  . . . . . . . . . . . . .  4
+     2.6.  Involvement or not into routing  . . . . . . . . . . . . .  4
+     2.7.  Server locality  . . . . . . . . . . . . . . . . . . . . .  4
+     2.8.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  4
+     2.9.  Separate vs. unified management  . . . . . . . . . . . . .  5
+   3.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   4.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  5
+   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  5
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  5
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  5
+
+1.  Introduction
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+   This document is being discussed on the xyz@example.org mailing list.
+
+   Add some text here.  You will need to use these references somewhere
+   within the text:
+
+2.  Comparison
+
+2.1.  Interworking with different L2 topologies
+
+   RA is "server-initiated, send once, receive many, no confirmation"
+   abstraction - something that works well on the 10base2-type shared
+   bus and even the today's wired ethernet, but looks quite miserable on
+   the WiFi media without the ugly special tricks (802.11 provides
+   reliable delivery for unicast frames, and does not provide one for
+   multicast frames, also the physical speeds are different and even the
+   contention management and the speed/modulation can be different as
+   well).
+
+   DHCPv6 is "client-initiated, send once, receive once, confirmation"
+   abstraction.  This may be wasteful on the low-bandwidth links that
+   provide bus topology, but maps extremely well onto scenarios like
+   WiFi - as it allows to maintain somewhat familiar mode of operation
+   to wired ethernet.
+
+   This is where the p2p, acknowledged nature of DHCPv6 may be
+   beneficial - on a crowded large-scale WiFi, without dirty tricks, you
+   simply will not get the SLAAC working because the multicast RAs will
+   get crunched by the interference.
+
+   Alternatively, in a very mobile environment and the RFC-compliant
+   router, multicast solicited RAs might make a significant portion of
+   your traffic - which, due to a difference in modulation, etc.  may
+   eat way more bandwidth than if they were sent unicast.
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 2]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+2.2.  Acknowledged vs.  Unacknowledged
+
+   DHCPv6 needs at least 2 packets.  RA is just one packet.
+
+   RA strength: it is quicker; RA weakness: you have to take care that
+   it is legitimate router and not your evil neighbor sending you the
+   RAs you take the configuration from.
+
+   DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6
+   minus: takes at least 1 RTT to the server.
+
+2.3.  Client initiated vs.  server initiated
+
+   Despite the division above, RA can be client-initiated, to some
+   extent, with RS, and DHCPv6 can be server-initiated, to some extent,
+   with "Reconfigure" messages.
+
+   If we treat these as "nudge" messages, the behavior of the sending
+   and receiving parties is similar - the "nudge" message causes the
+   orderly protocol exchange to occur before the due time.
+
+   The part that is different, though, is that RA, due to its "send
+   once, receive many" nature, can aggregate the "nudge" messages, so
+   intuitively seems best for a scenario with a very large number of the
+   hosts, as it should have self-stabilizing properties, compared to
+   DHCPv6.
+
+   This "self-stabilizing" property intuitively seems to make RA safer
+   to use, IFF it is used in purely "multicast" fashion.  However, the
+   L2 media interaction concerns might affect and even cancel out this
+   property, depending on the environment.
+
+2.4.  Centralized coordination vs.  distributed coordination
+
+   RA, due to its "send once, receive many" nature, in its pure form
+   necessarily can not dictate a per-client settings, but rather can
+   only advise the domain the client would pick from (SLAAC).
+
+   DHCPv6 on the other hand, due to its p2p nature is by default well
+   suited for the individual per-client tweaking.
+
+   The distributed nature can be a blessing if you do not care about who
+   gets which address and a curse if you need to account everyone
+   strictly.
+
+   NB: address assignment does not mean that the hosts will always use
+   those addresses - e.g.  it's perfectly possible to statically
+   configure a different address, but we talk just homogenous standards-
+   compliant well-behaved hosts for simplicity sake).
+
+
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 3]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+   That's why the title of this section does not use the word "control"
+   but rather uses the word "coordination".
+
+2.5.  The amount of server-side state
+
+   RA in its pure form is inherently stateless - there is no per-client
+   information stored on the sending router.  This eases the things like
+   redundancy and failover compared to DHCPv6.
+
+   DHCPv6 in its stateless incarnation also does not keep the state -
+   however, in the scenario of the DHCPv6 server sending the RECONFIGURE
+   message to the client, DHCPv6 server must keep some knowledge of the
+   client - which means it might need to keep some state.
+
+   [FIXME] Further experimentation needed to test how it actually works
+   in real life implementations.
+
+2.6.  Involvement or not into routing
+
+   RAs are a mechanism to provide some form of reliability for the
+   routing in an independent fashion to the reasonably unsophisticated
+   hosts.  DHCPv6 was specifically denied any involvement in the
+   routing.
+
+   While architecturally "pure", the reliability and timing of the
+   routing resiliency provided by the RAs is far below those achieved by
+   FHRP protocols which are used in today's networks predominantly.
+
+   This might create a dissonance between those who want to ensure RAs
+   are used for routing, and those who do not see any use of them in
+   that regard - with the corresponding contention of adding anything
+   routing-related into DHCPv6.
+
+2.7.  Server locality
+
+   Both DHCPv6 and RA are inherently link-local mechanisms, however
+   DHCPv6 has a means to "jump" over multiple hops by use of the relays.
+   This means RA *has* to be distributed, while DHCPv6 can be both
+   centralized and distributed.  Frequently it is made centralized
+   because of other benefits that centralized administration brings, but
+   almost any router today can run a DHCPv6 server itself with very
+   little problem.
+
+2.8.  Programming: UDP vs.  ICMP
+
+   For a random programmer today, coding a server to receive the data on
+   a UDP socket is a more familiar exercise than working with ICMP.
+   Disclaimer: the value of "random" was chosen to be "me" for arbitrary
+   reasons.
+
+   This point is more of a rathole and a personal preference, probably.
+   [FIXME] In Windows one of the two was way easier to extend than the
+   other, but I do not remember which.
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
+2.9.  Separate vs.  unified management
+
+   If DHCPv4 and routing is managed by the different groups in the
+   organization, then conceivably the "server" people will not like to
+   have their work go away and similarly "router" guys are happy to get
+   rid of yet another point of coordination and argument.
+
+   This is where the "I hate $protocol" could definitely pop up -
+   because for one side it may be the media interworking that is a
+   crucial factor, while for the other side it is the amount of state
+   held on the server - thus the agreement would never be achieved
+   because they are arguing about different things.
+
+3.  Conclusion
+
+   This document has attempted to show that both DHCPv6 and RA based
+   configuration mechanisms have their unique strengths and weaknesses,
+   and each of them may be "the best" depending on the environment for a
+   particular network.
+
+   Therefore, the host stacks which expect to maximize their chances of
+   connectivity when moving between different networks, will achieve
+   this best by implementing both mechanisms - else they might end
+   lacking essential configuration parameters if the network supports
+   the mechanism of not their choosing.
+
+   The networks may adopt a similar approach of attempting to support
+   both mechanisms at once, to try to accomodate the "single-minded"
+   hosts - but doing so usually incurs the overhead, which should be
+   evaluated by the network administrators.
+
+4.  Acknowledgements
+
+   Thanks to Ted Lemon for triggering the creation of this document.
+
+   Thanks to Lorenzo Colitti for the valuable discussion about the
+   server-side state and the client-server initiated interactions.
+
+5.  IANA Considerations
+
+6.  Security Considerations
+
+7.  References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+Author's Address
+
+
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
+   Andrew
+   cisco
+   7a de Kleetlaan
+   Diegem, 1830
+   Belgium
+   
+   Phone: +32 2 704 5494
+   Email: ayourtch@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 6]

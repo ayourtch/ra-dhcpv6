@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+]>
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> <!-- used by XSLT processors -->
+<!-- OPTIONS, known as processing instructions (PIs) go here. -->
+<!-- For a complete list and description of PIs,
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable PIs that most I-Ds might want to use. -->
+<?rfc strict="yes" ?> <!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC): -->
+<?rfc toc="yes"?> <!-- generate a ToC -->
+<?rfc tocdepth="2"?> <!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references: -->
+<?rfc symrefs="yes"?> <!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?> <!-- sort the reference entries alphabetically -->
+<!-- control vertical white space: 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?> <!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?> <!-- keep one blank line between list items -->
+<!-- end of popular PIs -->
+<rfc  category="info" docName="draft-yourtchenko-ra-dhcpv6-comparison-00" ipr="trust200902">
+  <front>
+    <title abbrev="RA and DHCPv6 comparison">A comparison between the DHCPv6  and RA based host configuration</title>
+    <author fullname="Andrew" initials="A" surname="Yourtchenko">
+      <organization>cisco</organization>
+      <address>
+        <postal>
+      <street>7a de Kleetlaan</street>
+      <city>Diegem</city>
+<!-- <region/> -->
+      <code>1830</code>
+      <country>Belgium</country>
+        </postal>
+      <phone>+32 2 704 5494</phone>
+<!-- <facsimile/> -->
+      <email>ayourtch@cisco.com</email>
+<!-- <uri/> -->
+      </address>
+    </author>
+    <date year="2013" />
+<!-- <area/> -->
+<!-- <workgroup/> -->
+      <keyword>ra, dhcpv6</keyword>
+<!-- <keyword/> -->
+<!-- <keyword/> -->
+<!-- <keyword/> -->
+    <abstract>
+      <t>
+This document attempts to make a balanced comparison between the RA-based and DHCPv6-based host configuration mechanisms. It compares the two on different aspects - like, underlying media assumptions, coordination, locality, etc. and highlights the strong and weak sides of both for each scenario.      </t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction">
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
+        this document are to be interpreted as described in
+        <xref target="RFC2119"/>.
+      </t>
+      <t>
+        This document is being discussed on the xyz@example.org mailing list.
+      </t>
+      <t>
+        Add some text here. You will need to use these references somewhere within the text:
+      </t>
+    </section>
+    <section anchor="Comparison" title="Comparison">
+      <section anchor="L2TopologyInterworking" title="Interworking with different L2 topologies">
+        <t>
+RA is "server-initiated, send once, receive many, no confirmation" abstraction - something 
+that works well on the 10base2-type shared bus and even the today's wired
+ethernet, but looks quite miserable on the WiFi media without the ugly special tricks (802.11 provides 
+reliable delivery for unicast frames, and does not provide one
+for multicast frames, also the physical speeds are different and even 
+the contention management and the speed/modulation can be different as well).
+        </t>
+        <t>
+DHCPv6 is "client-initiated, send once, receive once, confirmation" abstraction. 
+This may be wasteful on the low-bandwidth links that provide bus topology, but maps
+extremely well onto scenarios like WiFi - as it allows to maintain somewhat 
+familiar mode of operation to wired ethernet.
+        </t>
+        <t>
+This is where the p2p, acknowledged nature of DHCPv6 may be beneficial - on a crowded large-scale WiFi, without dirty tricks, you simply will not get the SLAAC
+working because the multicast RAs will get crunched by the interference.
+        </t>
+        <t>
+Alternatively, in a very mobile environment and the RFC-compliant router, multicast 
+solicited RAs might make a significant portion of your traffic - which, due to a
+difference in modulation, etc. may eat way more bandwidth than if they were sent unicast.
+        </t>
+      </section>
+      <section anchor="AckNoAck" title="Acknowledged vs. Unacknowledged">
+        <t>
+DHCPv6 needs at least 2 packets. RA is just one packet.
+	</t>
+	<t>
+RA strength: it is quicker; RA weakness: you have to take care that it is legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
+	</t>
+	<t>
+DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server.
+        </t>
+      </section>
+      <section anchor="ClientOrServerInitiated" title="Client initiated vs. server initiated">
+        <t>
+Despite the division above, RA can be client-initiated, to some extent, 
+with RS, and DHCPv6 can be server-initiated, to some extent, with "Reconfigure" messages.
+	</t>
+	<t>
+If we treat these as "nudge" messages, the behavior of the sending and receiving parties is similar - the "nudge" message causes the orderly protocol exchange to
+occur before the due time.
+	</t>
+	<t>
+The part that is different, though, is that RA, due to its "send once, receive many" nature, can aggregate the "nudge" messages, so intuitively seems best for a
+scenario with a very large number of the hosts, as it should have self-stabilizing properties, compared to DHCPv6.
+	</t>
+	<t>
+This "self-stabilizing" property intuitively seems to make RA safer to use, IFF it is used in purely "multicast" fashion.
+However, the L2 media interaction concerns might affect and even cancel out this property, depending on the environment.
+        </t>
+      </section>
+      <section anchor="CentralCoordVsDistrib" title="Centralized coordination vs. distributed coordination">
+        <t>
+RA, due to its "send once, receive many" nature, in its pure form necessarily 
+can not dictate a per-client settings, but rather can only advise the domain the client
+would pick from (SLAAC).
+	</t>
+	<t>
+DHCPv6 on the other hand, due to its p2p nature is by default well suited 
+for the individual per-client tweaking.
+	</t>
+	<t>
+The distributed nature can be a blessing if you do not care about 
+who gets which address and a curse if you need to account everyone strictly.
+	</t>
+	<t>
+NB: address assignment does not mean that the hosts will always use those 
+addresses - e.g. it's perfectly possible to statically configure a different address, but
+we talk just homogenous standards-compliant well-behaved hosts for simplicity sake).
+	</t>
+	<t>
+That's why the title of this section does not use the word "control" but rather uses the word "coordination".
+        </t>
+      </section>
+      <section anchor="ServerSideState" title="The amount of server-side state">
+	<t>
+RA in its pure form is inherently stateless - there is no per-client information stored on the sending router. 
+This eases the things like redundancy and failover compared to DHCPv6.
+	</t>
+	<t>
+DHCPv6 in its stateless incarnation also does not keep the state - 
+however, in the scenario of the DHCPv6 server sending the RECONFIGURE message to the client,
+DHCPv6 server must keep some knowledge of the client - which means it might need to keep some state.
+	</t>
+	<t>
+[FIXME] Further experimentation needed to test how it actually works in real life implementations.
+        </t>
+      </section>
+      <section anchor="Routing" title="Involvement or not into routing">
+        <t>
+RAs are a mechanism to provide some form of reliability for the routing 
+in an independent fashion to the reasonably unsophisticated hosts. 
+DHCPv6 was specifically denied any involvement in the routing.
+	</t>
+	<t>
+While architecturally "pure", the reliability and timing 
+of the routing resiliency provided by the RAs is far below 
+those achieved by FHRP protocols which are used
+in today's networks predominantly.
+	</t>
+	<t>
+This might create a dissonance between those who want 
+to ensure RAs are used for routing, and those who do not see 
+any use of them in that regard - with the
+corresponding contention of adding anything 
+routing-related into DHCPv6.
+        </t>
+      </section>
+      <section anchor="ServerLocality" title="Server locality">
+        <t>
+Both DHCPv6 and RA are inherently link-local mechanisms, 
+however DHCPv6 has a means to "jump" over multiple hops by 
+use of the relays. This means RA *has* to be
+distributed, while DHCPv6 can be both centralized and distributed. 
+Frequently it is made centralized because of other benefits that 
+centralized administration brings, but almost any router today 
+can run a DHCPv6 server itself with very little problem.
+        </t>
+      </section>
+      <section anchor="Programming" title="Programming: UDP vs. ICMP">
+        <t>
+For a random programmer today, coding a server to receive the data on a UDP socket 
+is a more familiar exercise than working with ICMP. Disclaimer: the value of
+"random" was chosen to be "me" for arbitrary reasons. 
+	</t>
+	<t>
+This point is more of a rathole and a personal preference, probably. 
+[FIXME] In Windows one of the two was way easier to extend than the other, but I do not remember which.
+        </t>
+        <t>
+        </t>
+      </section>
+      <section anchor="Management" title="Separate vs. unified management">
+        <t>
+If DHCPv4 and routing is managed by the different groups in the organization, 
+then conceivably the "server" people will not like to have their work go away and
+similarly "router" guys are happy to get rid of yet another point of coordination 
+and argument. 
+	</t>
+	<t>
+This is where the "I hate $protocol" could definitely pop up - because for one
+side it may be the media interworking that is a crucial factor, while for 
+the other side it is the amount of state held on the server - thus the agreement would 
+never be achieved because they are arguing about different things.
+        </t>
+      </section>
+    </section>
+    <section anchor="Conclusion" title="Conclusion">
+	<t>
+This document has attempted to show that both DHCPv6 and RA based 
+configuration mechanisms have their unique strengths and weaknesses, 
+and each of them may be "the best" depending on the environment 
+for a particular network.
+        </t>
+	<t>
+Therefore, the host stacks which expect to maximize their chances of connectivity
+when moving between different networks, will achieve this best by implementing 
+both mechanisms - else they might end lacking essential configuration parameters 
+if the network supports the mechanism of not their choosing.
+        </t>
+	<t>
+The networks may adopt a similar approach of attempting to support both mechanisms 
+at once, to try to accomodate the "single-minded" hosts - but doing so usually incurs
+the overhead, which should be evaluated by the network administrators.
+	</t>
+
+    </section>
+    <section anchor="Acknowledgements" title="Acknowledgements">
+        <t>
+Thanks to Ted Lemon for triggering the creation of this document.
+        </t>
+        <t>
+Thanks to Lorenzo Colitti for the valuable discussion about the server-side state and the client-server initiated interactions.
+        </t>
+    </section>
+    <section anchor="IANA" title="IANA Considerations">
+        <t>
+        </t>
+        <t>
+        </t>
+    </section>
+    <section anchor="Security" title="Security Considerations">
+        <t>
+        </t>
+        <t>
+        </t>
+    </section>
+  </middle>
+  <back>
+    <references title="Normative References">
+      &RFC2119;
+    </references>
+  </back>
+</rfc>
