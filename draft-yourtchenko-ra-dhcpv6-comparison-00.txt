@@ -170,14 +170,16 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    strictly.
 
    NB: address assignment does not mean that the hosts will always use
-   those addresses - e.g.  it's perfectly possible to statically
-   configure a different address, but we talk just homogenous standards-
+
+
 
 
 Yourtchenko              Expires April 30, 2014                 [Page 3]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
+   those addresses - e.g.  it's perfectly possible to statically
+   configure a different address, but we talk just homogenous standards-
    compliant well-behaved hosts for simplicity sake).
 
    That's why the title of this section does not use the word "control"
@@ -208,6 +210,12 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    server A to begin with, it will not listen to notifications from B -
    so B will need to spoof A in some way.
 
+   However, at the same time this ease with which one device can
+   instruct the hosts on behalf of the other can be also considered a
+   weakness in a stricter environment - and require additional security
+   measures in place so that a malicious host did not impersonate a
+   router.
+
 2.6.  The amount of server-side state
 
    RA in its pure form is inherently stateless - there is no per-client
@@ -224,6 +232,12 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
 2.7.  Involvement or not into routing
 
+
+Yourtchenko              Expires April 30, 2014                 [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
    RAs are a mechanism to provide some form of reliability for the
    routing in an independent fashion to the reasonably unsophisticated
    hosts.  DHCPv6 was specifically denied any involvement in the
@@ -232,11 +246,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    While architecturally "pure", the reliability and timing of the
    routing resiliency provided by the RAs is far below those achieved by
    FHRP protocols which are used in today's networks predominantly.
-
-Yourtchenko              Expires April 30, 2014                 [Page 4]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
    This might create a dissonance between those who want to ensure RAs
    are used for routing, and those who do not see any use of them in
@@ -279,6 +288,15 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
 3.  Conclusion
 
+
+
+
+
+Yourtchenko              Expires April 30, 2014                 [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison            October 2013
+
+
    This document has attempted to show that both DHCPv6 and RA based
    configuration mechanisms have their unique strengths and weaknesses,
    and each of them may be "the best" depending on the environment for a
@@ -289,13 +307,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    this best by implementing both mechanisms - else they might end
    lacking essential configuration parameters if the network supports
    the mechanism of not their choosing.
-
-
-
-Yourtchenko              Expires April 30, 2014                 [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
    The networks may adopt a similar approach of attempting to support
    both mechanisms at once, to try to accomodate the "single-minded"
@@ -328,17 +339,6 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 
