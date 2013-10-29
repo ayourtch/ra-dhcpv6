@@ -92,9 +92,9 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    RA is "server-initiated, send once, receive many, no confirmation"
    abstraction - something that works well on the 10base2-type shared
    bus and even the today's wired ethernet, but looks quite miserable on
-   the WiFi media without the ugly special tricks (802.11 provides
-   reliable delivery for unicast frames, and does not provide one for
-   multicast frames, also the physical speeds are different and even the
+   the WiFi media without the special tricks (802.11 provides reliable
+   delivery for unicast frames, and does not provide one for multicast
+   frames, also the physical speeds are different and even the
    contention management and the speed/modulation can be different as
    well).
 
@@ -109,8 +109,8 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    simply will not get the SLAAC working because the multicast RAs will
    get crunched by the interference.
 
-
-
+   Alternatively, in a very mobile environment and the RFC-compliant
+   router, multicast solicited RAs might make a significant portion of
 
 
 
@@ -119,8 +119,6 @@ Yourtchenko              Expires April 30, 2014                 [Page 2]
 
 Internet-Draft          RA and DHCPv6 comparison            October 2013
 
-   Alternatively, in a very mobile environment and the RFC-compliant
-   router, multicast solicited RAs might make a significant portion of
    your traffic - which, due to a difference in modulation, etc.  may
    eat way more bandwidth than if they were sent unicast.
 
@@ -133,7 +131,9 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    RAs you take the configuration from.
 
    DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6
-   minus: takes at least 1 RTT to the server.
+   minus: takes at least 1 RTT to the server.  The necessity for the
+   multiple packets exchange does not obviate the need for the securing
+   DHCPv6 in a similar fashion.
 
 2.3.  Client initiated vs.  server initiated
 

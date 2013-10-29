@@ -70,7 +70,7 @@ This document attempts to make a balanced comparison between the RA-based and DH
         <t>
 RA is "server-initiated, send once, receive many, no confirmation" abstraction - something 
 that works well on the 10base2-type shared bus and even the today's wired
-ethernet, but looks quite miserable on the WiFi media without the ugly special tricks (802.11 provides 
+ethernet, but looks quite miserable on the WiFi media without the special tricks (802.11 provides 
 reliable delivery for unicast frames, and does not provide one
 for multicast frames, also the physical speeds are different and even 
 the contention management and the speed/modulation can be different as well).
@@ -99,7 +99,7 @@ DHCPv6 needs at least 2 packets. RA is just one packet.
 RA strength: it is quicker; RA weakness: you have to take care that it is legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
 	</t>
 	<t>
-DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server.
+DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. The necessity for the multiple packets exchange does not obviate the need for the securing DHCPv6 in a similar fashion.
         </t>
       </section>
       <section anchor="ClientOrServerInitiated" title="Client initiated vs. server initiated">
