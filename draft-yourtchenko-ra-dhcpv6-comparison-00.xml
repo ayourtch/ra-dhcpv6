@@ -300,6 +300,16 @@ the other side it is the amount of state held on the server - thus the agreement
 never be achieved because they are arguing about different things.
         </t>
       </section>
+      <section anchor="AddrManagement" title="IPAM tools impact comparison">
+	<t>
+From Brian Carpenter. For further discussion.
+	</t>
+      </section>
+      <section anchor="SecurityTools" title="Security tools impact comparison">
+	<t>
+From Brian Carpenter. For further discussion.
+	</t>
+      </section>
     </section>
     <section anchor="SingleProtocolArguments" title="Arguments for running only a single protocol">
       <t>
@@ -318,6 +328,11 @@ moment, which means that as operators we are very exposed to rogue RAs and
 rogue DHCPv6 packets flying around networks.
 	</t>
       </section>
+    </section>
+    <section anchor="NetworkManagerDifferences" title="Differences between different types of network operators">
+      <t>
+Mostly placeholder, to capture the different requirements from various different network profiles (home-like zeroconf network, rural type network, university campus, enterprise, bank, ISP, etc.).
+      </t>
     </section>
     <section anchor="Conclusion" title="Conclusion">
 	<t>
@@ -338,6 +353,12 @@ at once, to try to accomodate the "single-minded" hosts - but doing so usually i
 the overhead, which should be evaluated by the network administrators.
 	</t>
 
+    </section>
+    <section anchor="FurtherProtocolDevelopment" title="Musings on further protocol directions in IETF">
+	<t>
+To discuss: do we define spheres of influence for SLAAC/RA and DHCPv6, with strictly limited overlap, or do we try to make them equipotent, with a shared
+data model for their options?
+	</t>
     </section>
     <section anchor="Acknowledgements" title="Acknowledgements">
         <t>
