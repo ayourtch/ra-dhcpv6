@@ -3,8 +3,8 @@
 
 Network Working Group                                     A. Yourtchenko
 Internet-Draft                                                     cisco
-Intended status: Informational                          October 30, 2013
-Expires: May 01, 2014
+Intended status: Informational                         November 03, 2013
+Expires: May 05, 2014
 
     A comparison between the DHCPv6  and RA based host configuration
                draft-yourtchenko-ra-dhcpv6-comparison-00
@@ -32,7 +32,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 01, 2014.
+   This Internet-Draft will expire on May 05, 2014.
 
 Copyright Notice
 
@@ -54,9 +54,9 @@ Table of Contents
    2.  Comparison . . . . . . . . . . . . . . . . . . . . . . . . . .  2
      2.1.  Interworking with different L2 topologies  . . . . . . . .  2
 
-Yourtchenko               Expires May 01, 2014                  [Page 1]
+Yourtchenko               Expires May 05, 2014                  [Page 1]
 
-Internet-Draft          RA and DHCPv6 comparison            October 2013
+Internet-Draft          RA and DHCPv6 comparison           November 2013
 
      2.2.  Acknowledged vs. Unacknowledged  . . . . . . . . . . . . .  3
      2.3.  Client initiated vs. server initiated  . . . . . . . . . .  3
@@ -64,16 +64,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
-     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  5
+     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
-     2.11. IPAM tools impact comparison . . . . . . . . . . . . . . .  7
-     2.12. Security tools impact comparison . . . . . . . . . . . . .  7
+     2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  7
+     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . .  7
+     2.13. Security tools impact comparison . . . . . . . . . . . . .  7
    3.  Arguments for running only a single protocol . . . . . . . . .  7
      3.1.  Support and Security Complexity  . . . . . . . . . . . . .  7
    4.  Differences between different types of network operators . . .  7
    5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   6.  Musings on further protocol directions in IETF . . . . . . . .  7
+   6.  Musings on further protocol directions in IETF . . . . . . . .  8
    7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  8
    8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  8
    9.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
@@ -110,15 +111,18 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    WiFi - as it allows to maintain somewhat familiar mode of operation
    to wired ethernet.
 
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 2]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    This is where the p2p, acknowledged nature of DHCPv6 may be
    beneficial - on a crowded large-scale WiFi, without dirty tricks, you
    simply will not get the SLAAC working because the multicast RAs will
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 2]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
    get crunched by the interference.
 
    Alternatively, in a very mobile environment and the RFC-compliant
@@ -167,17 +171,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    only advise the domain the client would pick from (SLAAC).
 
    DHCPv6 on the other hand, due to its p2p nature is by default well
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 3]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
    suited for the individual per-client tweaking.
 
    The distributed nature can be a blessing if you do not care about who
    gets which address and a curse if you need to account everyone
-
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 3]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
    strictly.
 
    NB: address assignment does not mean that the hosts will always use
@@ -225,18 +229,21 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    information stored on the sending router.  This eases the things like
    redundancy and failover compared to DHCPv6.
 
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    DHCPv6 in its stateless incarnation also does not keep the state -
    however, in the scenario of the DHCPv6 server sending the RECONFIGURE
    message to the client, DHCPv6 server must keep some knowledge of the
    client - which means it might need to keep some state.
 
    [FIXME] Further experimentation needed to test how it actually works
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 4]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
    in real life implementations.
 
    jinmei@wide.ad.jp: If you mean the Delayed Authentication Protocol by
@@ -284,18 +291,17 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    brian@innovationslab.net: you do not know that the DHCPv6 message you
    received came from a router or a server.
 
+
+Yourtchenko               Expires May 05, 2014                  [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    [FIXME]: This section needs further debates, clarifications, and a
    rewrite.  I am not sure I correctly captured the essence.  The
    arguments are welcome!
 
 2.8.  Server locality
-
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
    Both DHCPv6 and RA are inherently link-local mechanisms, however
    DHCPv6 has a means to "jump" over multiple hops by use of the relays.
@@ -344,23 +350,35 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    have their work go away and similarly "router" guys are happy to get
    rid of yet another point of coordination and argument.
 
+
+Yourtchenko               Expires May 05, 2014                  [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    This is where the "I hate $protocol" could definitely pop up -
    because for one side it may be the media interworking that is a
    crucial factor, while for the other side it is the amount of state
    held on the server - thus the agreement would never be achieved
    because they are arguing about different things.
 
+2.11.  Scope of use / Applicability
 
-Yourtchenko               Expires May 01, 2014                  [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
+   From volz@cisco.com: DHCP SHOULD configure the network resources
+   available for the client device to use (i.e., things needed to
+   provide tnetwork connectivity and access to that network's services).
+   It should not configure user specific services (i.e., there was some
+   discussion about email (SMTP, POP, IMAP server) information as an
+   example of something that would not be DHCP configured).
 
+   FIXME: The above imho overlaps with another paragraph where RA are
+   sent by routers.
 
-2.11.  IPAM tools impact comparison
+2.12.  IPAM tools impact comparison
 
    From Brian Carpenter.  For further discussion.
 
-2.12.  Security tools impact comparison
+2.13.  Security tools impact comparison
 
    From Brian Carpenter.  For further discussion.
 
@@ -390,6 +408,13 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
 
 5.  Conclusion
 
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    This document has attempted to show that both DHCPv6 and RA based
    configuration mechanisms have their unique strengths and weaknesses,
    and each of them may be "the best" depending on the environment for a
@@ -407,13 +432,6 @@ Internet-Draft          RA and DHCPv6 comparison            October 2013
    evaluated by the network administrators.
 
 6.  Musings on further protocol directions in IETF
-
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 7]
-
-Internet-Draft          RA and DHCPv6 comparison            October 2013
-
 
    To discuss: do we define spheres of influence for SLAAC/RA and
    DHCPv6, with strictly limited overlap, or do we try to make them
@@ -450,22 +468,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Yourtchenko               Expires May 01, 2014                  [Page 8]
+Yourtchenko               Expires May 05, 2014                  [Page 8]

@@ -300,6 +300,19 @@ the other side it is the amount of state held on the server - thus the agreement
 never be achieved because they are arguing about different things.
         </t>
       </section>
+      <section anchor="ScopeOfUse" title="Scope of use / Applicability">
+	<t>
+From volz@cisco.com:
+
+DHCP SHOULD configure the network resources available for the client device to use (i.e., things needed to provide tnetwork connectivity and access to
+that network's services). It should not configure user specific services (i.e., there was some discussion about email (SMTP, POP, IMAP server) information
+as an example of something that would not be DHCP configured).
+
+	</t>
+	<t>
+FIXME: The above imho overlaps with another paragraph where RA are sent by routers. 
+	</t>
+      </section>
       <section anchor="AddrManagement" title="IPAM tools impact comparison">
 	<t>
 From Brian Carpenter. For further discussion.
