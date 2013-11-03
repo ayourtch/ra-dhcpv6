@@ -214,6 +214,26 @@ those achieved by FHRP protocols - which makes the "distributed routing for unso
 property unusable in the most networks. 
 	</t>
 	<t>
+From nick@inex.ie:
+
+The question is why would someone use RA for multiple gateway announcement
+when you'll get much better operational performance from a FHRP + single
+gateway address?  And why use RA for addressing when you'll get finer
+grained operational host control using dhcp?  Or when you need to use dhcp
+anyway in order to make your hosts do what they need to do?  Or on server
+farms when most of your hosts are statically addressed and it doesn't make
+sense to have multiple gateways with different addresses - and you'll get
+better uptime by not using RA?
+
+I'm not proposing to take away the option of using RAs if that's what you
+want to do.  I'm only suggesting that for many situations, it makes more
+sense to have a single static gateway address (optionally with multiple
+routers using a FHRP if you need reliability) and that consequently the
+idea of periodically announcing a selection of arbitrary gateways via RA is
+operationally second rate.
+
+	</t>
+	<t>
 With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes) 
 - something that is successfully done by DHCPv4 today. This creates an impression that adding this 
 functionality to DHCPv6 would allow to get rid of the RA completely for that use case.
