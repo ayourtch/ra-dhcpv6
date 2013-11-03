@@ -66,20 +66,20 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
-     2.10. Separate vs. unified management  . . . . . . . . . . . . .  6
+     2.10. Separate vs. unified management  . . . . . . . . . . . . .  7
      2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  7
      2.12. IPAM tools impact comparison . . . . . . . . . . . . . . .  7
      2.13. Security tools impact comparison . . . . . . . . . . . . .  7
    3.  Arguments for running only a single protocol . . . . . . . . .  7
-     3.1.  Support and Security Complexity  . . . . . . . . . . . . .  7
-   4.  Differences between different types of network operators . . .  7
-   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.1.  Support and Security Complexity  . . . . . . . . . . . . .  8
+   4.  Differences between different types of network operators . . .  8
+   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  8
    6.  Musings on further protocol directions in IETF . . . . . . . .  8
    7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  8
    8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  8
    9.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  9
 
 1.  Introduction
 
@@ -283,6 +283,19 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    think RA is the single possible candidate for that.
 
    The other aspect is that because RA ties in the routing and
+
+
+
+
+
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
    addressing information, one can say "RA shares the fate with
    routing".  However, this distinction is merely because of the
    decision to explicitly keep DHCPv6 away from routing - so can not be
@@ -290,12 +303,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
    brian@innovationslab.net: you do not know that the DHCPv6 message you
    received came from a router or a server.
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    [FIXME]: This section needs further debates, clarifications, and a
    rewrite.  I am not sure I correctly captured the essence.  The
@@ -340,6 +347,14 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    make sure the source address is link-local, etc), it's quite likely
    that you'll need something like unusual APIs like RFC3542 or some
    non-portable system dependent interface to write a standard-compliant
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
    DHCP(v6) client.  So, overall, I'd say the programming difficulty
    regarding UDP (DHCP) vs ICMP (RS/RA) is marginal.
 
@@ -349,12 +364,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    organization, then conceivably the "server" people will not like to
    have their work go away and similarly "router" guys are happy to get
    rid of yet another point of coordination and argument.
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    This is where the "I hate $protocol" could definitely pop up -
    because for one side it may be the media interworking that is a
@@ -371,8 +380,18 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    discussion about email (SMTP, POP, IMAP server) information as an
    example of something that would not be DHCP configured).
 
-   FIXME: The above imho overlaps with another paragraph where RA are
-   sent by routers.
+   From Ted.Lemon@nominum.com: One point of clarification that I found
+   useful but was not universally applauded was the notion that if the
+   protocol is or was in the Internet area, it's probably something you
+   can configure with DHCP; if it's not, think carefully before using
+   DHCP to configure it.  This lets out a _lot_ of stuff that has
+   options in DHCPv4.   But I can't think of anything it excludes that
+   I'd want to keep around.   Of course, Mobile IPv6 is an Internet area
+   protocol, and it's not entirely clear to me that it's configurable
+   via DHCP, although there exist DHCP options to configure it.
+
+   [FIXME]: AY: The above imho overlaps semantically with another
+   paragraph where RA are sent by routers.
 
 2.12.  IPAM tools impact comparison
 
@@ -389,6 +408,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    in the nodes.  This section enumerates the reasons for a network
    operator to strongly prefer having only one of these two protocols in
    operation on the network at any point in time.
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
 
 3.1.  Support and Security Complexity
 
@@ -407,13 +432,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    type network, university campus, enterprise, bank, ISP, etc.).
 
 5.  Conclusion
-
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 7]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    This document has attempted to show that both DHCPv6 and RA based
    configuration mechanisms have their unique strengths and weaknesses,
@@ -450,6 +468,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 10.  References
 
+
+Yourtchenko               Expires May 05, 2014                  [Page 8]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
@@ -468,4 +492,39 @@ Author's Address
 
 
 
-Yourtchenko               Expires May 05, 2014                  [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 9]

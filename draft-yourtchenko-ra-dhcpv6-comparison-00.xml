@@ -307,10 +307,21 @@ From volz@cisco.com:
 DHCP SHOULD configure the network resources available for the client device to use (i.e., things needed to provide tnetwork connectivity and access to
 that network's services). It should not configure user specific services (i.e., there was some discussion about email (SMTP, POP, IMAP server) information
 as an example of something that would not be DHCP configured).
+	</t>
+	<t>
+
+From Ted.Lemon@nominum.com:
+
+One point of clarification that I found useful but was not universally applauded was the notion that if the protocol is or was in the Internet area, it's
+probably something you can configure with DHCP; if it's not, think carefully before using DHCP to configure it.
+
+This lets out a _lot_ of stuff that has options in DHCPv4.   But I can't think of anything it excludes that I'd want to keep around.   Of course, Mobile
+IPv6 is an Internet area protocol, and it's not entirely clear to me that it's configurable via DHCP, although there exist DHCP options to configure it.
+
 
 	</t>
 	<t>
-FIXME: The above imho overlaps with another paragraph where RA are sent by routers. 
+[FIXME]: AY: The above imho overlaps semantically with another paragraph where RA are sent by routers. 
 	</t>
       </section>
       <section anchor="AddrManagement" title="IPAM tools impact comparison">
