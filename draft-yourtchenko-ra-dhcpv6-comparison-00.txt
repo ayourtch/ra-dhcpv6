@@ -65,17 +65,17 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
-     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  6
+     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  7
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  7
-     2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  7
-     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . .  7
+     2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  8
+     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . .  8
      2.13. Security tools impact comparison . . . . . . . . . . . . .  8
    3.  Arguments for running only a single protocol . . . . . . . . .  8
      3.1.  Support and Security Complexity  . . . . . . . . . . . . .  8
    4.  Differences between different types of network operators . . .  8
-   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-   6.  Musings on further protocol directions in IETF . . . . . . . .  8
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  8
+   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+   6.  Musings on further protocol directions in IETF . . . . . . . .  9
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  9
    8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  9
    9.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
@@ -271,23 +271,23 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    multiple gateway announcement when you'll get much better operational
    performance from a FHRP + single gateway address?  And why use RA for
    addressing when you'll get finer grained operational host control
-   using dhcp?  Or when you need to use dhcp anyway in order to make
-   your hosts do what they need to do?  Or on server farms when most of
-   your hosts are statically addressed and it doesn't make sense to have
-   multiple gateways with different addresses - and you'll get better
-   uptime by not using RA? I'm not proposing to take away the option of
-   using RAs if that's what you want to do.  I'm only suggesting that
-   for many situations, it makes more sense to have a single static
-   gateway address (optionally with multiple routers using a FHRP if you
-   need reliability) and that consequently the idea of periodically
-   announcing a selection of arbitrary gateways via RA is operationally
-   second rate.
+   using dhcp?
 
-   With this, the role of the RAs is reduced to just supplying the
-   default gateway (and maybe some static routes) - something that is
-   successfully done by DHCPv4 today.  This creates an impression that
+   From markzzzsmith@yahoo.com.au: You can have client specific RAs that
+   solve that problem.  This is not a missing capability that
+   duplicating RA functionality in DHCPv6 would then provide.
 
-
+   From nick@inex.ie: Or when you need to use dhcp anyway in order to
+   make your hosts do what they need to do?  Or on server farms when
+   most of your hosts are statically addressed and it doesn't make sense
+   to have multiple gateways with different addresses - and you'll get
+   better uptime by not using RA? I'm not proposing to take away the
+   option of using RAs if that's what you want to do.  I'm only
+   suggesting that for many situations, it makes more sense to have a
+   single static gateway address (optionally with multiple routers using
+   a FHRP if you need reliability) and that consequently the idea of
+   periodically announcing a selection of arbitrary gateways via RA is
+   operationally second rate.
 
 
 
@@ -296,6 +296,27 @@ Yourtchenko               Expires May 05, 2014                  [Page 5]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
+
+   From markzzzsmith@yahoo.com.au: I would really like to know specific
+   details of these many situations, and what specific benefits
+   switching off RAs would have.  I have been in many situations in many
+   networks, and when I consider my IPv4 experience (and also compare it
+   to my Novell IPX and Appletalk experiences), I see a lot of value in
+   having RAs provide default gateway(s) (VRRP/HSRP or not) information
+   and other layer 3 parameters to directly attached hosts from the
+   directly attached router(s). This is in comparison with the IPv4
+   alternative effort of enabling and configuring a heavier and more
+   resource consuming stateful DHCP server on either the first hop
+   routers, or enabling DHCP relays and then having to have a redundant
+   DHCP infrastructure somewhere else in the network.  It could be
+   argued that DHCP could be enabled and configured by default, but that
+   is also obviously the case with RAs, and they have been enabled by
+   default since day one.  The ability to automate the configuration of
+   DHCP does not inherently make DHCP better than RAs.
+
+   With this, the role of the RAs is reduced to just supplying the
+   default gateway (and maybe some static routes) - something that is
+   successfully done by DHCPv4 today.  This creates an impression that
    adding this functionality to DHCPv6 would allow to get rid of the RA
    completely for that use case.
 
@@ -323,6 +344,18 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.8.  Server locality
 
+
+
+
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    Both DHCPv6 and RA are inherently link-local mechanisms, however
    DHCPv6 has a means to "jump" over multiple hops by use of the relays.
    This means RA *has* to be distributed, while DHCPv6 can be both
@@ -347,14 +380,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    information can be read using netlink.  UDP is much simpler). On the
    other hand, I think stateful DHCPv6 is a more complicated protocol to
    implement than RAs, with more message types and so on.
-
-
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    jinmei@wide.ad.jp: I don't know why Linux uses a non portable API,
    but I believe writing programs handling RA options like RDNSS is no
@@ -384,6 +409,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    held on the server - thus the agreement would never be achieved
    because they are arguing about different things.
 
+
+Yourtchenko               Expires May 05, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
 2.11.  Scope of use / Applicability
 
    From volz@cisco.com: DHCP SHOULD configure the network resources
@@ -409,11 +440,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 2.12.  IPAM tools impact comparison
 
    From Brian Carpenter.  For further discussion.
-
-Yourtchenko               Expires May 05, 2014                  [Page 7]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
 2.13.  Security tools impact comparison
 
@@ -443,6 +469,11 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    various different network profiles (home-like zeroconf network, rural
    type network, university campus, enterprise, bank, ISP, etc.).
 
+Yourtchenko               Expires May 05, 2014                  [Page 8]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
 5.  Conclusion
 
    This document has attempted to show that both DHCPv6 and RA based
@@ -469,11 +500,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 7.  Acknowledgements
 
-Yourtchenko               Expires May 05, 2014                  [Page 8]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
    Thanks to Ted Lemon for triggering the creation of this document.
 
    Thanks to Lorenzo Colitti for the valuable discussion about the
@@ -498,32 +524,6 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

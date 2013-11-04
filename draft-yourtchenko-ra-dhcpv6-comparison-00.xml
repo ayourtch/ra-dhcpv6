@@ -219,7 +219,17 @@ From nick@inex.ie:
 The question is why would someone use RA for multiple gateway announcement
 when you'll get much better operational performance from a FHRP + single
 gateway address?  And why use RA for addressing when you'll get finer
-grained operational host control using dhcp?  Or when you need to use dhcp
+grained operational host control using dhcp?  
+	</t>
+	<t>
+From markzzzsmith@yahoo.com.au:
+
+You can have client specific RAs that solve that problem. This is not a missing capability that
+duplicating RA functionality in DHCPv6 would then provide.
+	</t>
+	<t>
+From nick@inex.ie:
+Or when you need to use dhcp
 anyway in order to make your hosts do what they need to do?  Or on server
 farms when most of your hosts are statically addressed and it doesn't make
 sense to have multiple gateways with different addresses - and you'll get
@@ -231,7 +241,28 @@ sense to have a single static gateway address (optionally with multiple
 routers using a FHRP if you need reliability) and that consequently the
 idea of periodically announcing a selection of arbitrary gateways via RA is
 operationally second rate.
+	</t>
+	<t>
+From markzzzsmith@yahoo.com.au:
 
+I would really like to know specific details of these many situations, 
+and what specific benefits switching off RAs would have. 
+I have been in many situations in many networks, and when I consider 
+my IPv4 experience (and also compare it to my Novell IPX and 
+Appletalk experiences), I see a lot of value in having
+RAs provide default gateway(s) (VRRP/HSRP or not) information and 
+other layer 3 parameters to directly attached hosts from the directly
+attached router(s). This is in comparison with the IPv4 alternative 
+effort of enabling and configuring a heavier and more resource consuming
+stateful DHCP server on either the first hop routers, or enabling
+DHCP relays and then having to have a redundant DHCP
+infrastructure somewhere else in the network.
+
+It could be argued that DHCP could be enabled and configured
+by default, but that is also obviously the case with RAs, and
+they have been enabled by default
+since day one. The ability to automate the configuration
+of DHCP does not inherently make DHCP better than RAs.
 	</t>
 	<t>
 With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes) 
