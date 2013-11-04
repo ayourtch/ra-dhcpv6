@@ -516,7 +516,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 Author's Address
 
-   Andrew
+   Andrew Yourtchenko
    cisco
    7a de Kleetlaan
    Diegem, 1830

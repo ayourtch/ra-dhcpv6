@@ -22,7 +22,7 @@
 <rfc  category="info" docName="draft-yourtchenko-ra-dhcpv6-comparison-00" ipr="trust200902">
   <front>
     <title abbrev="RA and DHCPv6 comparison">A comparison between the DHCPv6  and RA based host configuration</title>
-    <author fullname="Andrew" initials="A" surname="Yourtchenko">
+    <author fullname="Andrew Yourtchenko" initials="A" surname="Yourtchenko">
       <organization>cisco</organization>
       <address>
         <postal>
