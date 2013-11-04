@@ -64,6 +64,8 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
+       2.7.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+       2.7.2.  Discussion . . . . . . . . . . . . . . . . . . . . . .  6
      2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  7
      2.10. Separate vs. unified management  . . . . . . . . . . . . .  7
@@ -110,8 +112,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    provide bus topology, but maps extremely well onto scenarios like
    WiFi - as it allows to maintain somewhat familiar mode of operation
    to wired ethernet.
-
-
 
 
 
@@ -255,6 +255,8 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.7.  Involvement or not into routing
 
+2.7.1.  
+
    An RA-based protocol interaction may influence host's routing.  A
    DHCPv6-based interaction today can not influence the host's routing -
    it was specifically denied any and all involvement into routing.
@@ -266,6 +268,43 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    routing resiliency provided by the RAs is far below those achieved by
    FHRP protocols - which makes the "distributed routing for
    unsophisticated hosts" property unusable in the most networks.
+
+   With this, the role of the RAs is reduced to just supplying the
+   default gateway (and maybe some static routes) - something that is
+   successfully done by DHCPv4 today.  This creates an impression that
+   adding this functionality to DHCPv6 would allow to get rid of the RA
+   completely for that use case.
+
+   However, the "single source of truth" nature of DHCPv6 prevents the
+   successful operation in case of multiple servers on the segment
+   supplying different information.  RAs in this case may still work.
+
+   Some consider the inability to support this scenario crucial, and
+   some think it is not useful.  This creates contention between the
+   proponents of those who want DHCPv6 deal with routing, and those who
+   think RA is the single possible candidate for that.
+
+   The other aspect is that because RA ties in the routing and
+   addressing information, one can say "RA shares the fate with
+   routing".  However, this distinction is merely because of the
+   decision to explicitly keep DHCPv6 away from routing - so can not be
+   considered a true property of the protocol.
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
+   brian@innovationslab.net: you do not know that the DHCPv6 message you
+   received came from a router or a server.
+
+   [FIXME]: This section needs further debates, clarifications, and a
+   rewrite.  I am not sure I correctly captured the essence.  The
+   arguments are welcome!
+
+2.7.2.  Discussion
 
    From nick@inex.ie: The question is why would someone use RA for
    multiple gateway announcement when you'll get much better operational
@@ -289,14 +328,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    periodically announcing a selection of arbitrary gateways via RA is
    operationally second rate.
 
-
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
    From markzzzsmith@yahoo.com.au: I would really like to know specific
    details of these many situations, and what specific benefits
    switching off RAs would have.  I have been in many situations in many
@@ -314,38 +345,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    default since day one.  The ability to automate the configuration of
    DHCP does not inherently make DHCP better than RAs.
 
-   With this, the role of the RAs is reduced to just supplying the
-   default gateway (and maybe some static routes) - something that is
-   successfully done by DHCPv4 today.  This creates an impression that
-   adding this functionality to DHCPv6 would allow to get rid of the RA
-   completely for that use case.
-
-   However, the "single source of truth" nature of DHCPv6 prevents the
-   successful operation in case of multiple servers on the segment
-   supplying different information.  RAs in this case may still work.
-
-   Some consider the inability to support this scenario crucial, and
-   some think it is not useful.  This creates contention between the
-   proponents of those who want DHCPv6 deal with routing, and those who
-   think RA is the single possible candidate for that.
-
-   The other aspect is that because RA ties in the routing and
-   addressing information, one can say "RA shares the fate with
-   routing".  However, this distinction is merely because of the
-   decision to explicitly keep DHCPv6 away from routing - so can not be
-   considered a true property of the protocol.
-
-   brian@innovationslab.net: you do not know that the DHCPv6 message you
-   received came from a router or a server.
-
-   [FIXME]: This section needs further debates, clarifications, and a
-   rewrite.  I am not sure I correctly captured the essence.  The
-   arguments are welcome!
-
 2.8.  Server locality
-
-
-
 
 
 

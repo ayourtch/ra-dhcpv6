@@ -198,6 +198,7 @@ option (RFC4242)).
 	</t>
       </section>
       <section anchor="Routing" title="Involvement or not into routing">
+          <section anchor="Routing1" title="">
 	<t>
 An RA-based protocol interaction may influence host's routing. 
 A DHCPv6-based interaction today can not influence the host's routing - 
@@ -213,6 +214,32 @@ of the routing resiliency provided by the RAs is far below
 those achieved by FHRP protocols - which makes the "distributed routing for unsophisticated hosts" 
 property unusable in the most networks. 
 	</t>
+	<t>
+With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes) 
+- something that is successfully done by DHCPv4 today. This creates an impression that adding this 
+functionality to DHCPv6 would allow to get rid of the RA completely for that use case.
+	</t>
+	<t>
+However, the "single source of truth" nature of DHCPv6 prevents the successful operation in case of 
+multiple servers on the segment supplying different information. RAs in this case may still work.
+	</t>
+	<t>
+Some consider the inability to support this scenario crucial, and some think it is not useful. 
+This creates contention between the proponents of those who want DHCPv6 deal with routing, and those
+who think RA is the single possible candidate for that.
+	</t>
+	<t>
+The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares the fate with routing". However, this distinction is merely because of the decision to explicitly keep DHCPv6 away from routing - so can not be considered a true property of the protocol.
+	</t>
+	<t>
+brian@innovationslab.net: you do not know that the DHCPv6 message you received came from a
+router or a server.
+	</t>
+	<t>
+[FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
+	</t>
+	  </section>
+          <section anchor="RoutingDiscussion" title="Discussion">
 	<t>
 From nick@inex.ie:
 
@@ -264,30 +291,7 @@ they have been enabled by default
 since day one. The ability to automate the configuration
 of DHCP does not inherently make DHCP better than RAs.
 	</t>
-	<t>
-With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes) 
-- something that is successfully done by DHCPv4 today. This creates an impression that adding this 
-functionality to DHCPv6 would allow to get rid of the RA completely for that use case.
-	</t>
-	<t>
-However, the "single source of truth" nature of DHCPv6 prevents the successful operation in case of 
-multiple servers on the segment supplying different information. RAs in this case may still work.
-	</t>
-	<t>
-Some consider the inability to support this scenario crucial, and some think it is not useful. 
-This creates contention between the proponents of those who want DHCPv6 deal with routing, and those
-who think RA is the single possible candidate for that.
-	</t>
-	<t>
-The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares the fate with routing". However, this distinction is merely because of the decision to explicitly keep DHCPv6 away from routing - so can not be considered a true property of the protocol.
-	</t>
-	<t>
-brian@innovationslab.net: you do not know that the DHCPv6 message you received came from a
-router or a server.
-	</t>
-	<t>
-[FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
-	</t>
+	  </section> <!-- Discussion about routing -->
       </section>
       <section anchor="ServerLocality" title="Server locality">
         <t>
