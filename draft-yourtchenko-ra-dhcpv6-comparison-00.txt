@@ -62,26 +62,27 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.3.  Client initiated vs. server initiated  . . . . . . . . . .  3
      2.4.  Centralized coordination vs. distributed coordination  . .  3
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
-     2.6.  The amount of server-side state  . . . . . . . . . . . . .  4
+     2.6.  The amount of server-side state  . . . . . . . . . . . . .  5
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
        2.7.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-       2.7.2.  Discussion . . . . . . . . . . . . . . . . . . . . . .  6
-     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  6
-     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  7
-     2.10. Separate vs. unified management  . . . . . . . . . . . . .  7
-     2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  8
-     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . .  8
-     2.13. Security tools impact comparison . . . . . . . . . . . . .  8
-   3.  Arguments for running only a single protocol . . . . . . . . .  8
-     3.1.  Support and Security Complexity  . . . . . . . . . . . . .  8
-   4.  Differences between different types of network operators . . .  8
-   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-   6.  Musings on further protocol directions in IETF . . . . . . . .  9
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . .  9
-   8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  9
-   9.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . .  9
+       2.7.2.  Discussion 1 . . . . . . . . . . . . . . . . . . . . .  6
+       2.7.3.  Discussion 2 . . . . . . . . . . . . . . . . . . . . .  8
+     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  8
+     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  9
+     2.10. Separate vs. unified management  . . . . . . . . . . . . .  9
+     2.11. Scope of use / Applicability . . . . . . . . . . . . . . . 10
+     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . . 10
+     2.13. Security tools impact comparison . . . . . . . . . . . . . 10
+   3.  Arguments for running only a single protocol . . . . . . . . . 10
+     3.1.  Support and Security Complexity  . . . . . . . . . . . . . 10
+   4.  Differences between different types of network operators . . . 10
+   5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+   6.  Musings on further protocol directions in IETF . . . . . . . . 11
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 11
+   8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 11
+   9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 11
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 11
 
 1.  Introduction
 
@@ -112,7 +113,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    provide bus topology, but maps extremely well onto scenarios like
    WiFi - as it allows to maintain somewhat familiar mode of operation
    to wired ethernet.
-
 
 
 Yourtchenko               Expires May 05, 2014                  [Page 2]
@@ -218,6 +218,25 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    so B will need to spoof A in some way.
 
    However, at the same time this ease with which one device can
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
    instruct the hosts on behalf of the other can be also considered a
    weakness in a stricter environment - and require additional security
    measures in place so that a malicious host did not impersonate a
@@ -228,15 +247,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    RA in its pure form is inherently stateless - there is no per-client
    information stored on the sending router.  This eases the things like
    redundancy and failover compared to DHCPv6.
-
-
-
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 4]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    DHCPv6 in its stateless incarnation also does not keep the state -
    however, in the scenario of the DHCPv6 server sending the RECONFIGURE
@@ -279,6 +289,14 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    successful operation in case of multiple servers on the segment
    supplying different information.  RAs in this case may still work.
 
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    Some consider the inability to support this scenario crucial, and
    some think it is not useful.  This creates contention between the
    proponents of those who want DHCPv6 deal with routing, and those who
@@ -290,13 +308,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    decision to explicitly keep DHCPv6 away from routing - so can not be
    considered a true property of the protocol.
 
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
    brian@innovationslab.net: you do not know that the DHCPv6 message you
    received came from a router or a server.
 
@@ -304,7 +315,116 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    rewrite.  I am not sure I correctly captured the essence.  The
    arguments are welcome!
 
-2.7.2.  Discussion
+2.7.2.  Discussion 1
+
+   From nick@inex.ie: The premise that many people in the IETF seem to
+   be working on is that the typical - or even a common - deployment
+   case of ipv6 will involve multiple routers per lan segment.  I say
+   this because every time the issue of DHCP providing a defgw comes up,
+   one of the main arguments that's trotted out is that it will break
+   the multiple-routers-per-lan-segment scenario.  The above 3
+   paragraphs also strongly hint at this as being the target deployment.
+   Well maybe dhcpv6 doesn't do that, but the operational reality is
+   that multiple gateways on the same lan is going to be the rare
+   exception rather than the rule.  The reason why I think this is
+   because: 1. enterprises have an obtuse obsession for L2.  They'd pave
+   the world with L2 and extend L2 from one end of the universe to the
+   other if they could.  Just look at the horror of vxlan (who are they
+   kidding?  themselves?) as a perfect example of this insanity.  I
+   don't know why this is but it's the way that lots of enterprise
+   rolls, ranging from SME to largish networks.  Outside truly large
+   operations (i.e.  10s of thousands of users), I have never got the
+   impression that enterprises got L3 routing.
+
+   From v6ops@globis.net: I think you do Enterprise engineers a serious
+   dis-service.  Many consciously choose for L2 interfaces (with HSRP/
+   VRRP) isolation LANs between service providers precisely because L3
+   is more complex to debug and engineer across an administrative
+   boundary.  Even agreeing on an IGP can be tricky, never mind worrying
+
+
+
+
+
+
+
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+   about route flapping or redistribution loops.  Experience has shown
+   that HSRP/VRRP + static routes in a simple active/standby
+   construction can deliver extremely robust SLA KPI's.  Secondly,
+   practical deployment of L3 routing protocols on end hosts was a no-go
+   in IPv4.
+
+   From nick@inex.ie: 2. homenet: I don't understand the target audience
+   for the entire homenet multiple network movement.  Putting this
+   another way: who is going to debug homenet multiple network stuff
+   when it breaks, because as far as I can tell, that belongs in the
+   realm of level 2 engineering escalation (i.e.  $120/hr sort of
+   thing).  It's a little far-fetched to expect gramps and grandma to
+   set up and maintain and debug multiple networking segments.  A good
+   chunk of the stuff going on in homenet is vastly more complicated
+   than pretty much any home network is ever going to need.
+   Architecturally interesting, but srsly not realistic as a viable
+   approach to home networking.
+
+   From v6ops@globis.net: I think Homenet WG well-understands the
+   challenges with deployment and little-conf..
+
+   From nick@inex.ie: 3. service providers - the single operational
+   group on the internet that actually understands L3 / network
+   segmentation and why it's important - will attempt avoid multiple
+   gateways per network like the plague because it makes their
+   deployment scenarios more complicated and provides no extra value.
+   For server / host farms, service providers like FHRP with tight
+   timers because it gives control of onward connectivity.  All of which
+   doesn't leave very many more user-market segments.
+
+   From v6ops@globis.net: I disagree entirely, and would characterise
+   this as a rather network-operator-centric view, rather than a host-
+   centric view.
+
+   From nick@inex.ie: Regarding RA for routing and DHCP for addressing,
+   what people care about is connectivity.  What I need as an operator
+   is a protocol (preferably a single protocol because that is simpler)
+   which will enable my boxes to gain the connectivity they need.
+   Whether you call this routing or providing a default gateway, I don't
+   much mind.  Look, there's too much ideology going on here.  The IETF
+   is being dazzled by the sight of multiple lan segments and multiple
+   egress gateways without realising that these are the minority
+   configuration.  All this effort is going into optimising ipv6 address
+   / lan autoconfiguration for these unusual scenarios without heeding
+   the sober reality that most people, service providers and enterprises
+   are only ever going to want to have a single defgw per lan segment,
+   and that by far the most common deployment scenario will be a single
+   lan segment per organisation.
+
+   From v6ops@globis.net: Move to wireless?  My smartphone already has
+   two radios and a physical interface, connected to multiple providers.
+   How exactly do you then configure a "single defgw per lan segment"
+
+
+
+Yourtchenko               Expires May 05, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+   (without draft-troan-homenet-sadr-01)
+
+   From nick@inex.ie: I'm aware that this viewpoint will be regarded as
+   retrograde, and that a bunch of people on this list will probably sit
+   there, rolling their eyes and thinking: "yeah, and 640k was enough
+   for everyone".  Just bear in mind that added complexity is not
+   necessarily a good thing.  The support costs are high and the return
+   on effort is dubious at best.  IOW, the IETF is optimising a corner
+   case.
+
+2.7.3.  Discussion 2
 
    From nick@inex.ie: The question is why would someone use RA for
    multiple gateway announcement when you'll get much better operational
@@ -349,9 +469,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 
 
-
-
-Yourtchenko               Expires May 05, 2014                  [Page 6]
+Yourtchenko               Expires May 05, 2014                  [Page 8]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
@@ -410,7 +528,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    because they are arguing about different things.
 
 
-Yourtchenko               Expires May 05, 2014                  [Page 7]
+Yourtchenko               Expires May 05, 2014                  [Page 9]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
@@ -469,7 +587,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    various different network profiles (home-like zeroconf network, rural
    type network, university campus, enterprise, bank, ISP, etc.).
 
-Yourtchenko               Expires May 05, 2014                  [Page 8]
+Yourtchenko               Expires May 05, 2014                 [Page 10]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
@@ -527,4 +645,4 @@ Author's Address
 
 
 
-Yourtchenko               Expires May 05, 2014                  [Page 9]
+Yourtchenko               Expires May 05, 2014                 [Page 11]

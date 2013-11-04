@@ -239,7 +239,129 @@ router or a server.
 [FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
 	</t>
 	  </section>
-          <section anchor="RoutingDiscussion" title="Discussion">
+          <section anchor="RoutingDiscussion1" title="Discussion 1">
+	<t>
+From nick@inex.ie:
+The premise that many people in the IETF seem to be working on is that the
+typical - or even a common - deployment case of ipv6 will involve multiple
+routers per lan segment.  I say this because every time the issue of DHCP
+providing a defgw comes up, one of the main arguments that's trotted out is
+that it will break the multiple-routers-per-lan-segment scenario.  The
+above 3 paragraphs also strongly hint at this as being the target deployment.
+Well maybe dhcpv6 doesn't do that, but the operational reality is that
+multiple gateways on the same lan is going to be the rare exception rather
+than the rule. The reason why I think this is because:
+
+1. enterprises have an obtuse obsession for L2.  They'd pave the world with
+L2 and extend L2 from one end of the universe to the other if they could.
+Just look at the horror of vxlan (who are they kidding?  themselves?) as a
+perfect example of this insanity.  I don't know why this is but it's the
+way that lots of enterprise rolls, ranging from SME to largish networks.
+Outside truly large operations (i.e. 10s of thousands of users), I have
+never got the impression that enterprises got L3 routing.
+
+	</t>
+	<t>
+From v6ops@globis.net:
+
+I think you do Enterprise engineers a serious dis-service. Many
+consciously choose for L2 interfaces (with HSRP/ VRRP) isolation LANs
+between service providers precisely because L3 is more complex to debug
+and engineer across an administrative boundary. Even agreeing on an IGP
+can be tricky, never mind worrying about route flapping or
+redistribution loops. Experience has shown that HSRP/VRRP + static
+routes in a simple active/standby construction can deliver extremely
+robust SLA KPI's.
+
+Secondly, practical deployment of L3 routing protocols on end hosts was
+a no-go in IPv4.
+
+	</t>
+	<t>
+From nick@inex.ie:
+
+2. homenet: I don't understand the target audience for the entire homenet
+ multiple network movement. Putting this another way: who is going to debug
+ homenet multiple network stuff when it breaks, because as far as I can
+ tell, that belongs in the realm of level 2 engineering escalation (i.e.
+ $120/hr sort of thing).  It's a little far-fetched to expect gramps and
+ grandma to set up and maintain and debug multiple networking segments.  A
+ good chunk of the stuff going on in homenet is vastly more complicated than
+ pretty much any home network is ever going to need.  Architecturally
+ interesting, but srsly not realistic as a viable approach to home networking.
+
+	</t>
+	<t>
+From v6ops@globis.net:
+
+I think Homenet WG well-understands the challenges with deployment and
+little-conf..
+
+	</t>
+	<t>
+From nick@inex.ie:
+
+ 3. service providers - the single operational group on the internet that
+ actually understands L3 / network segmentation and why it's important -
+ will attempt avoid multiple gateways per network like the plague because it
+ makes their deployment scenarios more complicated and provides no extra
+ value.  For server / host farms, service providers like FHRP with tight
+ timers because it gives control of onward connectivity.
+
+ All of which doesn't leave very many more user-market segments.
+
+	</t>
+	<t>
+From v6ops@globis.net:
+
+I disagree entirely, and would characterise this as a rather
+network-operator-centric view, rather than a host-centric view.
+
+	</t>
+	<t>
+From nick@inex.ie:
+
+ Regarding RA for routing and DHCP for addressing, what people care about is
+ connectivity.  What I need as an operator is a protocol (preferably a
+ single protocol because that is simpler) which will enable my boxes to gain
+ the connectivity they need.  Whether you call this routing or providing a
+ default gateway, I don't much mind.
+
+ Look, there's too much ideology going on here.  The IETF is being dazzled
+ by the sight of multiple lan segments and multiple egress gateways without
+ realising that these are the minority configuration.  All this effort is
+ going into optimising ipv6 address / lan autoconfiguration for these
+ unusual scenarios without heeding the sober reality that most people,
+service providers and enterprises are only ever going to want to have a
+ single defgw per lan segment, and that by far the most common deployment
+ scenario will be a single lan segment per organisation.
+
+	</t>
+	<t>
+From v6ops@globis.net:
+
+Move to wireless?
+
+My smartphone already has two radios and a physical interface, connected
+to multiple providers.
+
+How exactly do you then configure a "single defgw per lan segment"
+(without draft-troan-homenet-sadr-01)
+	</t>
+	<t>
+From nick@inex.ie:
+
+ I'm aware that this viewpoint will be regarded as retrograde, and that a
+ bunch of people on this list will probably sit there, rolling their eyes
+ and thinking: "yeah, and 640k was enough for everyone".
+
+ Just bear in mind that added complexity is not necessarily a good thing.
+ The support costs are high and the return on effort is dubious at best.
+ IOW, the IETF is optimising a corner case. 
+	</t>
+
+	  </section>
+          <section anchor="RoutingDiscussion2" title="Discussion 2">
 	<t>
 From nick@inex.ie:
 
