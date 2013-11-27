@@ -672,9 +672,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
    Thanks to Ted Lemon for triggering the creation of this document.
 
+   Thanks to Lorenzo Colitti for the valuable discussion about the
+   server-side state and the client-server initiated interactions.
+
    Thanks to the following people who brought in text or ideas into the
    document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian
-   Haberman, Jinmei Tatuya, Ted Lemon, Lorenzo Colitti.
+   Haberman,
 
 8.  IANA Considerations
 
@@ -695,9 +698,6 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
 
 
 

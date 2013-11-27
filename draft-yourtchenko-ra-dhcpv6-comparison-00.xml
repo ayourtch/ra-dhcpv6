@@ -56,11 +56,8 @@ and highlights the strong and weak sides of both protocols for each scenario.
   <middle>
     <section title="Introduction">
       <t>
-IPv4 provided only one way of configuring the addresses and node parameters: DHCP. Having no choice made the choice simple.
-      </t>
-      <t>
-DHCPv6 allows for a similar mode of operation with DHCPv6, but also introduces the mandatory Router Advertisements, which
-overlap in some functionality with DHCPv6.
+IPv4 provided only one way of configuring the addresses: DHCP. Having no choice made the choice simple.
+IPv6 provides a second mechanism called SLAAC in addition to using DHCPv6 in a fashion similar to IPv4.
 This creates the problem: what is the best ? How do I know which of the two to use ? Since "the best" 
 usually means "the best for me", it is an inherently locally-significant adjective. A lot of arguments are
 not taking this into the account, resulting in deadlock situations and mutual frustrations during the discussion.
@@ -587,8 +584,10 @@ data model for their options ?
 Thanks to Ted Lemon for triggering the creation of this document.
         </t>
         <t>
-Thanks to the following people who brought in text or ideas into the document: 
-Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman, Jinmei Tatuya, Ted Lemon, Lorenzo Colitti.
+Thanks to Lorenzo Colitti for the valuable discussion about the server-side state and the client-server initiated interactions.
+        </t>
+        <t>
+Thanks to the following people who brought in text or ideas into the document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman,
         </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
