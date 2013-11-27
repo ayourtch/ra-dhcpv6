@@ -64,7 +64,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
      2.6.  The amount of server-side state  . . . . . . . . . . . . .  5
      2.7.  Involvement or not into routing  . . . . . . . . . . . . .  5
-       2.7.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+       2.7.1.  Comparison . . . . . . . . . . . . . . . . . . . . . .  5
        2.7.2.  Discussion 1: On multiple default gateways per segment  6
        2.7.3.  Discussion 2: Why require an RA if DHCPv6 is more
                appropriate ?  . . . . . . . . . . . . . . . . . . . .  7
@@ -280,7 +280,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.7.  Involvement or not into routing
 
-2.7.1.  
+2.7.1.  Comparison
 
    An RA-based protocol interaction may influence host's routing.  A
    DHCPv6-based interaction today can not influence the host's routing -
