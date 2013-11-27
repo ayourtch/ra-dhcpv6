@@ -94,7 +94,8 @@ extremely well onto scenarios like WiFi - as it allows to maintain somewhat
 familiar mode of operation to wired ethernet.
         </t>
         <t>
-This is where the p2p, acknowledged nature of DHCPv6 may be beneficial - on a crowded large-scale WiFi, without dirty tricks, you simply will not get the SLAAC
+This is where the peer-to-peer, acknowledged nature of DHCPv6 may be beneficial - on a crowded large-scale WiFi, 
+without special tricks to ensure the reliable delivery of multicast packets, you simply will not get the SLAAC
 working because the multicast RAs will get crunched by the interference.
         </t>
         <t>
@@ -111,7 +112,12 @@ DHCPv6 needs at least 2 packets. RA is just one packet.
 RA strength: it is quicker; RA weakness: you have to take care that it is legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
 	</t>
 	<t>
-DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. The necessity for the multiple packets exchange does not obviate the need for the securing DHCPv6 in a similar fashion.
+DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. The necessity for the multiple packets exchange does not obviate the need for the securing DHCPv6 in a similar fashion. 
+        </t>
+	<t>
+There is one additional reason for the DHCPv6 to be slower. RFC3315 states: "A client MUST collect Advertise messages for the first RT seconds,
+unless it receives an Advertise message with a preference value of 255.". Since most of the time the preference in DHCPv6 messages is not 255,
+the compliant nodes will be at least 1 second (+/- up to 0.1 sec) slower than those using RA - as RT is calculated based on SOL_TIMEOUT value.
         </t>
       </section>
       <section anchor="ClientOrServerInitiated" title="Client initiated vs. server initiated">
