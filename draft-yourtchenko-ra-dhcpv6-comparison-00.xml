@@ -255,33 +255,19 @@ In the case of using DHCPv6, it is not the case.
 [FIXME]: This section needs further debates, clarifications, and a rewrite. Discussion welcome.
 	</t>
 	  </section>
-          <section anchor="RoutingDiscussion1" title="Discussion 1">
+          <section anchor="RoutingDiscussion1" title="Discussion 1: On multiple default gateways per segment">
 	<t>
-From nick@inex.ie:
 The premise that many people in the IETF seem to be working on is that the
-typical - or even a common - deployment case of ipv6 will involve multiple
+typical - or even a common - deployment case of IPv6 will involve multiple
 routers per lan segment.  I say this because every time the issue of DHCP
-providing a defgw comes up, one of the main arguments that's trotted out is
-that it will break the multiple-routers-per-lan-segment scenario.  The
-above 3 paragraphs also strongly hint at this as being the target deployment.
-Well maybe dhcpv6 doesn't do that, but the operational reality is that
-multiple gateways on the same lan is going to be the rare exception rather
-than the rule. The reason why I think this is because:
-
-1. enterprises have an obtuse obsession for L2.  They'd pave the world with
-L2 and extend L2 from one end of the universe to the other if they could.
-Just look at the horror of vxlan (who are they kidding?  themselves?) as a
-perfect example of this insanity.  I don't know why this is but it's the
-way that lots of enterprise rolls, ranging from SME to largish networks.
-Outside truly large operations (i.e. 10s of thousands of users), I have
-never got the impression that enterprises got L3 routing.
-
+providing a default gateway comes up, one of the main arguments is
+that it will break the multiple-routers-per-lan-segment scenario. 
+The operational reality is that multiple gateways on the same LAN is 
+going to be the rare exception rather
+than the rule - outside truly large operations (i.e. 10s of thousands of users).
 	</t>
 	<t>
-From v6ops@globis.net:
-
-I think you do Enterprise engineers a serious dis-service. Many
-consciously choose for L2 interfaces (with HSRP/ VRRP) isolation LANs
+Many consciously choose for L2 interfaces (with HSRP/ VRRP) isolation LANs
 between service providers precisely because L3 is more complex to debug
 and engineer across an administrative boundary. Even agreeing on an IGP
 can be tricky, never mind worrying about route flapping or
@@ -291,52 +277,14 @@ robust SLA KPI's.
 
 Secondly, practical deployment of L3 routing protocols on end hosts was
 a no-go in IPv4.
-
 	</t>
 	<t>
-From nick@inex.ie:
-
-2. homenet: I don't understand the target audience for the entire homenet
- multiple network movement. Putting this another way: who is going to debug
- homenet multiple network stuff when it breaks, because as far as I can
- tell, that belongs in the realm of level 2 engineering escalation (i.e.
- $120/hr sort of thing).  It's a little far-fetched to expect gramps and
- grandma to set up and maintain and debug multiple networking segments.  A
- good chunk of the stuff going on in homenet is vastly more complicated than
- pretty much any home network is ever going to need.  Architecturally
- interesting, but srsly not realistic as a viable approach to home networking.
-
-	</t>
-	<t>
-From v6ops@globis.net:
-
-I think Homenet WG well-understands the challenges with deployment and
-little-conf..
-
-	</t>
-	<t>
-From nick@inex.ie:
-
- 3. service providers - the single operational group on the internet that
- actually understands L3 / network segmentation and why it's important -
- will attempt avoid multiple gateways per network like the plague because it
+Service providers will attempt avoid multiple gateways per network because it
  makes their deployment scenarios more complicated and provides no extra
  value.  For server / host farms, service providers like FHRP with tight
  timers because it gives control of onward connectivity.
-
- All of which doesn't leave very many more user-market segments.
-
 	</t>
 	<t>
-From v6ops@globis.net:
-
-I disagree entirely, and would characterise this as a rather
-network-operator-centric view, rather than a host-centric view.
-
-	</t>
-	<t>
-From nick@inex.ie:
-
  Regarding RA for routing and DHCP for addressing, what people care about is
  connectivity.  What I need as an operator is a protocol (preferably a
  single protocol because that is simpler) which will enable my boxes to gain
@@ -354,19 +302,12 @@ service providers and enterprises are only ever going to want to have a
 
 	</t>
 	<t>
-From v6ops@globis.net:
-
-Move to wireless?
-
-My smartphone already has two radios and a physical interface, connected
+Wireless?  My smartphone already has two radios and a physical interface, connected
 to multiple providers.
-
 How exactly do you then configure a "single defgw per lan segment"
 (without draft-troan-homenet-sadr-01)
 	</t>
 	<t>
-From nick@inex.ie:
-
  I'm aware that this viewpoint will be regarded as retrograde, and that a
  bunch of people on this list will probably sit there, rolling their eyes
  and thinking: "yeah, and 640k was enough for everyone".
@@ -377,24 +318,19 @@ From nick@inex.ie:
 	</t>
 
 	  </section>
-          <section anchor="RoutingDiscussion2" title="Discussion 2">
+          <section anchor="RoutingDiscussion2" title="Discussion 2: Why require an RA if DHCPv6 is more appropriate ?">
 	<t>
-From nick@inex.ie:
-
 The question is why would someone use RA for multiple gateway announcement
 when you'll get much better operational performance from a FHRP + single
 gateway address?  And why use RA for addressing when you'll get finer
-grained operational host control using dhcp?  
+grained operational host control using DHCPv6 ?  
 	</t>
 	<t>
-From markzzzsmith@yahoo.com.au:
-
 You can have client specific RAs that solve that problem. This is not a missing capability that
 duplicating RA functionality in DHCPv6 would then provide.
 	</t>
 	<t>
-From nick@inex.ie:
-Or when you need to use dhcp
+Or when you need to use DHCPv6
 anyway in order to make your hosts do what they need to do?  Or on server
 farms when most of your hosts are statically addressed and it doesn't make
 sense to have multiple gateways with different addresses - and you'll get
@@ -408,8 +344,6 @@ idea of periodically announcing a selection of arbitrary gateways via RA is
 operationally second rate.
 	</t>
 	<t>
-From markzzzsmith@yahoo.com.au:
-
 I would really like to know specific details of these many situations, 
 and what specific benefits switching off RAs would have. 
 I have been in many situations in many networks, and when I consider 
@@ -584,10 +518,7 @@ data model for their options ?
 Thanks to Ted Lemon for triggering the creation of this document.
         </t>
         <t>
-Thanks to Lorenzo Colitti for the valuable discussion about the server-side state and the client-server initiated interactions.
-        </t>
-        <t>
-Thanks to the following people who brought in text or ideas into the document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman,
+Thanks to the following people who brought in text or ideas into the document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman, Lorenzo Colitti, Ted Lemon, Ray Hunter.
         </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
