@@ -71,14 +71,14 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  9
      2.10. Separate vs. unified management  . . . . . . . . . . . . . 10
      2.11. Scope of use / Applicability . . . . . . . . . . . . . . . 10
-     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . . 11
-     2.13. Security tools impact comparison . . . . . . . . . . . . . 11
-   3.  Arguments for running only a single protocol . . . . . . . . . 11
+     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . . 10
+     2.13. Security tools impact comparison . . . . . . . . . . . . . 10
+   3.  Arguments for running only a single protocol . . . . . . . . . 10
      3.1.  Support and Security Complexity  . . . . . . . . . . . . . 11
    4.  Differences between different types of network operators . . . 11
    5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-   6.  Musings on further protocol directions in IETF . . . . . . . . 12
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 12
+   6.  Musings on further protocol directions in IETF . . . . . . . . 11
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 11
    8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
    9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 12
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
@@ -282,12 +282,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.7.1.  
 
+   An RA-based protocol interaction may influence host's routing.  A
+   DHCPv6-based interaction today can not influence the host's routing -
+   it was specifically denied any and all involvement into routing.
 
-
-
-
-
-
+   RAs as a mechanism, due to its "multiple sources of truth" nature,
+   can allow unsophisticated form of routing resiliency for the hosts.
 
 
 
@@ -296,12 +296,6 @@ Yourtchenko               Expires May 29, 2014                  [Page 5]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
-   An RA-based protocol interaction may influence host's routing.  A
-   DHCPv6-based interaction today can not influence the host's routing -
-   it was specifically denied any and all involvement into routing.
-
-   RAs as a mechanism, due to its "multiple sources of truth" nature,
-   can allow unsophisticated form of routing resiliency for the hosts.
 
    While architecturally "pure", the reliability and timing of the
    routing resiliency provided by the RAs is far below those achieved by
@@ -325,36 +319,14 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
    The other aspect is that because RA ties in the routing and
    addressing information, one can say "RA shares the fate with
-   routing".  However, this distinction is merely because of the
-   decision to explicitly keep DHCPv6 away from routing - so can not be
-   considered a true property of the protocol.
-
-   brian@innovationslab.net: you do not know that the DHCPv6 message you
-   received came from a router or a server.
+   routing".  In other words - when you receive an RA, it is always (in
+   the protocol-compliant case) coming from a router.  In the case of
+   using DHCPv6, it is not the case.
 
    [FIXME]: This section needs further debates, clarifications, and a
-   rewrite.  I am not sure I correctly captured the essence.  The
-   arguments are welcome!
+   rewrite.  Discussion welcome.
 
 2.7.2.  Discussion 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 6]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
 
    From nick@inex.ie: The premise that many people in the IETF seem to
    be working on is that the typical - or even a common - deployment
@@ -374,6 +346,15 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    rolls, ranging from SME to largish networks.  Outside truly large
    operations (i.e.  10s of thousands of users), I have never got the
    impression that enterprises got L3 routing.
+
+
+
+
+
+Yourtchenko               Expires May 29, 2014                  [Page 6]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
 
    From v6ops@globis.net: I think you do Enterprise engineers a serious
    dis-service.  Many consciously choose for L2 interfaces (with HSRP/
@@ -410,11 +391,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    timers because it gives control of onward connectivity.  All of which
    doesn't leave very many more user-market segments.
 
-Yourtchenko               Expires May 29, 2014                  [Page 7]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
    From v6ops@globis.net: I disagree entirely, and would characterise
    this as a rather network-operator-centric view, rather than a host-
    centric view.
@@ -429,6 +405,15 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    egress gateways without realising that these are the minority
    configuration.  All this effort is going into optimising ipv6 address
    / lan autoconfiguration for these unusual scenarios without heeding
+
+
+
+
+
+Yourtchenko               Expires May 29, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
    the sober reality that most people, service providers and enterprises
    are only ever going to want to have a single defgw per lan segment,
    and that by far the most common deployment scenario will be a single
@@ -459,6 +444,21 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    solve that problem.  This is not a missing capability that
    duplicating RA functionality in DHCPv6 would then provide.
 
+   From nick@inex.ie: Or when you need to use dhcp anyway in order to
+   make your hosts do what they need to do?  Or on server farms when
+   most of your hosts are statically addressed and it doesn't make sense
+   to have multiple gateways with different addresses - and you'll get
+   better uptime by not using RA? I'm not proposing to take away the
+   option of using RAs if that's what you want to do.  I'm only
+   suggesting that for many situations, it makes more sense to have a
+   single static gateway address (optionally with multiple routers using
+   a FHRP if you need reliability) and that consequently the idea of
+   periodically announcing a selection of arbitrary gateways via RA is
+   operationally second rate.
+
+
+
+
 
 
 
@@ -473,18 +473,6 @@ Yourtchenko               Expires May 29, 2014                  [Page 8]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
-
-   From nick@inex.ie: Or when you need to use dhcp anyway in order to
-   make your hosts do what they need to do?  Or on server farms when
-   most of your hosts are statically addressed and it doesn't make sense
-   to have multiple gateways with different addresses - and you'll get
-   better uptime by not using RA? I'm not proposing to take away the
-   option of using RAs if that's what you want to do.  I'm only
-   suggesting that for many situations, it makes more sense to have a
-   single static gateway address (optionally with multiple routers using
-   a FHRP if you need reliability) and that consequently the idea of
-   periodically announcing a selection of arbitrary gateways via RA is
-   operationally second rate.
 
    From markzzzsmith@yahoo.com.au: I would really like to know specific
    details of these many situations, and what specific benefits
@@ -515,15 +503,27 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.9.  Programming: UDP vs.  ICMP
 
-   For a random programmer today, coding a server to receive the data on
-   a UDP socket is a more familiar exercise than working with ICMP.
-   Disclaimer: the value of "random" was chosen to be "me" for arbitrary
-   reasons.
+   The programming difficulty is a somewhat subjective topic.  On one
+   hand, one can say ICMP is harder than UDP to implement; it often
+   requires raw sockets or kernel collaboration (e.g., on Linux RDNSS
+   information can be read using netlink.  UDP is much simpler). On the
+   other hand, stateful DHCPv6 can be arguably a more complicated
+   protocol to implement than RAs, with more message types and so on.
 
-   This point is more of a rathole and a personal preference, probably.
-   [FIXME] In Windows one of the two was way easier to extend than the
-   other, but I do not remember which.
-
+   On the other hand, it could be argued down to a choice of API:
+   writing programs handling RA options like RDNSS is no harder than
+   writing DHCPv6 client in terms of socket API.  As long as the system
+   supports RFC3542 you should be able to write a portable RA "client"
+   pretty easily (meaning as easy/hard as writing some UDP client
+   program).  For example, FreeBSD's rtsold supports RDNSS and (AFAIK)
+   only relies on the RFC3542 APIs.  Also, since DHCP is trickier than
+   other UDP applications in some points (it's more sensitive to which
+   interface to use, and in some cases you need to make sure the source
+   address is link-local, etc), it's quite likely that you'll need
+   something like unusual APIs like RFC3542 or some non-portable system
+   dependent interface to write a standard-compliant DHCP(v6) client.
+   So, overall, I'd say the programming difficulty regarding UDP (DHCP)
+   vs ICMP (RS/RA) is marginal.
 
 
 
@@ -533,26 +533,9 @@ Yourtchenko               Expires May 29, 2014                  [Page 9]
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 
-   lorenzo@google.com:  ICMP is harder than UDP to implement; it often
-   requires raw sockets or kernel collaboration (e.g., on Linux RDNSS
-   information can be read using netlink.  UDP is much simpler). On the
-   other hand, I think stateful DHCPv6 is a more complicated protocol to
-   implement than RAs, with more message types and so on.
-
-   jinmei@wide.ad.jp: I don't know why Linux uses a non portable API,
-   but I believe writing programs handling RA options like RDNSS is no
-   harder than writing DHCPv6 client in terms of socket API.  As long as
-   the system supports RFC3542 you should be able to write a portable RA
-   "client" pretty easily (meaning as easy/hard as writing some UDP
-   client program).  For example, FreeBSD's rtsold supports RDNSS and
-   (AFAIK) only relies on the RFC3542 APIs.  Also, since DHCP is
-   trickier than other UDP applications in some points (it's more
-   sensitive to which interface to use, and in some cases you need to
-   make sure the source address is link-local, etc), it's quite likely
-   that you'll need something like unusual APIs like RFC3542 or some
-   non-portable system dependent interface to write a standard-compliant
-   DHCP(v6) client.  So, overall, I'd say the programming difficulty
-   regarding UDP (DHCP) vs ICMP (RS/RA) is marginal.
+   In summary, it is probably fair to say that the "difficulty" in this
+   context equates to "unfamiliarity" in some respects, and "protocol
+   complexity" in others.
 
 2.10.  Separate vs.  unified management
 
@@ -586,12 +569,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    protocol, and it's not entirely clear to me that it's configurable
    via DHCP, although there exist DHCP options to configure it.
 
-
-Yourtchenko               Expires May 29, 2014                 [Page 10]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
    [FIXME]: AY: The above imho overlaps semantically with another
    paragraph where RA are sent by routers.
 
@@ -604,6 +581,16 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    From Brian Carpenter.  For further discussion.
 
 3.  Arguments for running only a single protocol
+
+
+
+
+
+
+Yourtchenko               Expires May 29, 2014                 [Page 10]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
 
    The "Comparison" section aims to highlight the various differences,
    and implicitly show the reasoning to have two protocols implemented
@@ -645,12 +632,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    hosts - but doing so usually incurs the overhead, which should be
    evaluated by the network administrators.
 
-
-Yourtchenko               Expires May 29, 2014                 [Page 11]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-
 6.  Musings on further protocol directions in IETF
 
    To discuss: do we define spheres of influence for SLAAC/RA and
@@ -663,6 +644,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
    Thanks to Lorenzo Colitti for the valuable discussion about the
    server-side state and the client-server initiated interactions.
+
+
+Yourtchenko               Expires May 29, 2014                 [Page 11]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
 
 8.  IANA Considerations
 
@@ -683,6 +670,19 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
