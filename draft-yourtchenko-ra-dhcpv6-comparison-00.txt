@@ -72,13 +72,13 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
      2.10. Separate vs. unified management  . . . . . . . . . . . . . 10
      2.11. Scope of use / Applicability . . . . . . . . . . . . . . . 10
      2.12. IPAM tools impact comparison . . . . . . . . . . . . . . . 10
-     2.13. Security tools impact comparison . . . . . . . . . . . . . 10
-   3.  Arguments for running only a single protocol . . . . . . . . . 10
+     2.13. Security tools impact comparison . . . . . . . . . . . . . 11
+   3.  Arguments for running only a single protocol . . . . . . . . . 11
      3.1.  Support and Security Complexity  . . . . . . . . . . . . . 11
    4.  Differences between different types of network operators . . . 11
    5.  Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-   6.  Musings on further protocol directions in IETF . . . . . . . . 11
-   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 11
+   6.  Musings on further protocol directions in IETF . . . . . . . . 12
+   7.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 12
    8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
    9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 12
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
@@ -552,35 +552,35 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.11.  Scope of use / Applicability
 
-   From volz@cisco.com: DHCP SHOULD configure the network resources
-   available for the client device to use (i.e., things needed to
-   provide tnetwork connectivity and access to that network's services).
-   It should not configure user specific services (i.e., there was some
-   discussion about email (SMTP, POP, IMAP server) information as an
-   example of something that would not be DHCP configured).
+   Another, somewhat philosophical question: what information should be
+   sent by the RA, and what information is appropriate to be sent by
+   DHCP, and which information should not be sent by either ? (Of
+   course, this assumes such a division exists.) The currently held
+   wisdom is as follows:
 
-   From Ted.Lemon@nominum.com: One point of clarification that I found
-   useful but was not universally applauded was the notion that if the
-   protocol is or was in the Internet area, it's probably something you
-   can configure with DHCP; if it's not, think carefully before using
-   DHCP to configure it.  This lets out a _lot_ of stuff that has
-   options in DHCPv4.   But I can't think of anything it excludes that
-   I'd want to keep around.   Of course, Mobile IPv6 is an Internet area
-   protocol, and it's not entirely clear to me that it's configurable
-   via DHCP, although there exist DHCP options to configure it.
+   DHCP SHOULD configure the network resources available for the client
+   device to use (i.e., things needed to provide network connectivity
+   and access to that network's services). It should not configure user
+   specific services (i.e., there was some discussion about email (SMTP,
+   POP, IMAP server) information as an example of something that would
+   not be DHCP configured).
 
-   [FIXME]: AY: The above imho overlaps semantically with another
-   paragraph where RA are sent by routers.
+   Another, IETF-specific approach about what can be configured with
+   DHCP: if the protocol is or was in the Internet area, it's probably
+   something you can configure with DHCP; if it's not, think carefully
+   before using DHCP to configure it.  This lets out a _lot_ of stuff
+   that has options in DHCPv4.  But I (Ted Lemon) can't think of
+   anything it excludes that I'd want to keep around.  Of course, Mobile
+   IPv6 is an Internet area protocol, and it's not entirely clear to me
+   that it's configurable via DHCP, although there exist DHCP options to
+   configure it.
+
+   [FIXME]: AY: The above section needs more work and discussion to
+   understand: (1) is there a strict division of functions between the
+   RA and DHCP (2) should there be a strict division of function ?
 
 2.12.  IPAM tools impact comparison
 
-   From Brian Carpenter.  For further discussion.
-
-2.13.  Security tools impact comparison
-
-   From Brian Carpenter.  For further discussion.
-
-3.  Arguments for running only a single protocol
 
 
 
@@ -592,6 +592,25 @@ Yourtchenko               Expires May 29, 2014                 [Page 10]
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 
+   This is an indirect dependency, resulting in the centralized vs.
+   distributed nature of DHCPv6 vs.  RA. IPAM tools integration with
+   DHCP is fairly well understood from IPv4. When using RA, however, the
+   IPAM can not track the addresses used.  Of course, the larger subnet
+   addressing space of IPv6 might in some cases transform the work
+   performed by the IPAM systems from tracking the individual hosts
+   towards tracking the subnets.  However, the host tracking needs to
+   still be performed, and correlating the addresses with the hosts may
+   be harder.
+
+   This said, until very recently DHCPv6 replaced the MAC address with
+   DUID - which created its own set of challenges.
+
+2.13.  Security tools impact comparison
+
+   From Brian Carpenter.  For further discussion.
+
+3.  Arguments for running only a single protocol
+
    The "Comparison" section aims to highlight the various differences,
    and implicitly show the reasoning to have two protocols implemented
    in the nodes.  This section enumerates the reasons for a network
@@ -600,13 +619,15 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 3.1.  Support and Security Complexity
 
-   nick@inex.ie: this brings up another important issue, namely source
-   address validation.  I'm not sure if it's relevant to bring this up
-   in your draft, but the requirement to handle snooping two new
-   protocols for effective lan source address validation seems to be
-   more than most vendors can handle at the moment, which means that as
-   operators we are very exposed to rogue RAs and rogue DHCPv6 packets
-   flying around networks.
+   The requirement to run two protocols at the same time securely
+   results in the need to snoop both of them - for effective source
+   address validation.  Some vendors are unable to handle both at once.
+   This means operators are very exposed to rogue RAs and rogue DHCPv6
+   packets flying around networks.
+
+   [FIXME]: To discuss further with Nick / other operators.  Basic
+   protection should be doable with just a simple PACL - which should
+   work at once for both protocols.
 
 4.  Differences between different types of network operators
 
@@ -621,6 +642,15 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    and each of them may be "the best" depending on the environment for a
    particular network.
 
+
+
+
+
+Yourtchenko               Expires May 29, 2014                 [Page 11]
+
+Internet-Draft          RA and DHCPv6 comparison           November 2013
+
+
    Therefore, the host stacks which expect to maximize their chances of
    connectivity when moving between different networks, will achieve
    this best by implementing both mechanisms - else they might end
@@ -634,22 +664,17 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 6.  Musings on further protocol directions in IETF
 
-   To discuss: do we define spheres of influence for SLAAC/RA and
-   DHCPv6, with strictly limited overlap, or do we try to make them
-   equipotent, with a shared data model for their options?
+   [FIXME] To discuss: do we define spheres of influence for SLAAC/RA
+   and DHCPv6, with strictly limited overlap, or do we try to make them
+   equipotent, with a shared data model for their options ?
 
 7.  Acknowledgements
 
    Thanks to Ted Lemon for triggering the creation of this document.
 
-   Thanks to Lorenzo Colitti for the valuable discussion about the
-   server-side state and the client-server initiated interactions.
-
-
-Yourtchenko               Expires May 29, 2014                 [Page 11]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
+   Thanks to the following people who brought in text or ideas into the
+   document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian
+   Haberman, Jinmei Tatuya, Ted Lemon, Lorenzo Colitti.
 
 8.  IANA Considerations
 
@@ -670,31 +695,6 @@ Author's Address
    
    Phone: +32 2 704 5494
    Email: ayourtch@cisco.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
