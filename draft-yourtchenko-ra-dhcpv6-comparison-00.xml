@@ -47,22 +47,34 @@
 <!-- <keyword/> -->
     <abstract>
       <t>
-This document attempts to make a balanced comparison between the RA-based and DHCPv6-based host configuration mechanisms. It compares the two on different aspects - like, underlying media assumptions, coordination, locality, etc. and highlights the strong and weak sides of both for each scenario.      </t>
+This document attempts to make a balanced comparison between the RA-based and DHCPv6-based host configuration mechanisms. 
+It compares the two on different aspects, e.g: underlying media assumptions, coordination, locality, etc. 
+and highlights the strong and weak sides of both protocols for each scenario.
+      </t>
     </abstract>
   </front>
   <middle>
     <section title="Introduction">
       <t>
+IPv4 provided only one way of configuring the addresses: DHCP. Having no choice made the choice simple.
+IPv6 provides a second mechanism called SLAAC in addition to using DHCPv6 in a fashion similar to IPv4.
+This creates the problem: what is the best ? How do I know which of the two to use ? Since "the best" 
+usually means "the best for me", it is an inherently locally-significant adjective. A lot of arguments are
+not taking this into the account, resulting in deadlock situations and mutual frustrations during the discussion.
+The goal of this document is dissecting the technical properties of both address configuration mechanisms.
+This should hopefully result in a more objective and technical analysis, and allow for a better judgement
+of which mechanism is "better" in each specific case.
+      </t>
+      <t>
+The author of the document does not take any sides nor tries to promote one approach over the other. 
+If you, the reader, spot any instance where this is not the case, please inform the author so this 
+could be corrected.
+      </t>
+      <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
         this document are to be interpreted as described in
         <xref target="RFC2119"/>.
-      </t>
-      <t>
-        This document is being discussed on the xyz@example.org mailing list.
-      </t>
-      <t>
-        Add some text here. You will need to use these references somewhere within the text:
       </t>
     </section>
     <section anchor="Comparison" title="Comparison">
