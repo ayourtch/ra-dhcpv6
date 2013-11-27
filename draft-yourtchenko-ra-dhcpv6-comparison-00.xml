@@ -216,7 +216,7 @@ option (RFC4242)).
 	</t>
       </section>
       <section anchor="Routing" title="Involvement or not into routing">
-          <section anchor="Routing1" title="">
+          <section anchor="Routing1" title="Comparison">
 	<t>
 An RA-based protocol interaction may influence host's routing. 
 A DHCPv6-based interaction today can not influence the host's routing - 
