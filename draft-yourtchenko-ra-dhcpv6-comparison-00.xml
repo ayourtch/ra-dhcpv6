@@ -199,7 +199,7 @@ however, in the scenario of the DHCPv6 server sending the RECONFIGURE message to
 DHCPv6 server must keep some knowledge of the client - which means it might need to keep some state.
 	</t>
 	<t>
-[FIXME] Further experimentation needed to test how it actually works in real life implementations.
+FIXME: Further experimentation needed to test how it actually works in real life implementations.
         </t>
 	<t>
 jinmei@wide.ad.jp:
@@ -252,7 +252,7 @@ In other words - when you receive an RA, it is always (in the protocol-compliant
 In the case of using DHCPv6, it is not the case.
 	</t>
 	<t>
-[FIXME]: This section needs further debates, clarifications, and a rewrite. Discussion welcome.
+FIXME: This section needs further debates, clarifications, and a rewrite. Discussion welcome.
 	</t>
 	  </section>
           <section anchor="RoutingDiscussion1" title="Discussion 1: On multiple default gateways per segment">
@@ -442,7 +442,7 @@ Of course, Mobile IPv6 is an Internet area protocol, and it's not entirely clear
 that it's configurable via DHCP, although there exist DHCP options to configure it.
 	</t>
 	<t>
-[FIXME]: AY: The above section needs more work and discussion to understand: (1) is there a strict division of functions between the RA and DHCP (2) should there be a strict division of function ? 
+FIXME: AY: The above section needs more work and discussion to understand: (1) is there a strict division of functions between the RA and DHCP (2) should there be a strict division of function ? 
 	</t>
       </section>
       <section anchor="AddrManagement" title="IPAM tools impact comparison">
@@ -477,7 +477,7 @@ This means operators are very exposed to rogue RAs and
 rogue DHCPv6 packets flying around networks.
 	</t>
 	<t>
-[FIXME]: To discuss further with Nick / other operators. Basic protection should be doable with just a simple PACL - which should work at once for both protocols.
+FIXME: To discuss further with Nick / other operators. Basic protection should be doable with just a simple PACL - which should work at once for both protocols.
 	</t>
       </section>
     </section>
@@ -508,7 +508,7 @@ the overhead, which should be evaluated by the network administrators.
     </section>
     <section anchor="FurtherProtocolDevelopment" title="Musings on further protocol directions in IETF">
 	<t>
-[FIXME] To discuss: do we define spheres of influence for SLAAC/RA and DHCPv6, with strictly 
+FIXME: To discuss: do we define spheres of influence for SLAAC/RA and DHCPv6, with strictly 
 limited overlap, or do we try to make them equipotent, with a shared
 data model for their options ?
 	</t>
