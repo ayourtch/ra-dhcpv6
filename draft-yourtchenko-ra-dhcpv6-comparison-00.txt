@@ -268,7 +268,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    message to the client, DHCPv6 server must keep some knowledge of the
    client - which means it might need to keep some state.
 
-   [FIXME] Further experimentation needed to test how it actually works
+   FIXME: Further experimentation needed to test how it actually works
    in real life implementations.
 
    jinmei@wide.ad.jp: If you mean the Delayed Authentication Protocol by
@@ -323,7 +323,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    the protocol-compliant case) coming from a router.  In the case of
    using DHCPv6, it is not the case.
 
-   [FIXME]: This section needs further debates, clarifications, and a
+   FIXME: This section needs further debates, clarifications, and a
    rewrite.  Discussion welcome.
 
 2.7.2.  Discussion 1: On multiple default gateways per segment
@@ -543,7 +543,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    that it's configurable via DHCP, although there exist DHCP options to
    configure it.
 
-   [FIXME]: AY: The above section needs more work and discussion to
+   FIXME: AY: The above section needs more work and discussion to
    understand: (1) is there a strict division of functions between the
    RA and DHCP (2) should there be a strict division of function ?
 
@@ -582,7 +582,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    This means operators are very exposed to rogue RAs and rogue DHCPv6
    packets flying around networks.
 
-   [FIXME]: To discuss further with Nick / other operators.  Basic
+   FIXME: To discuss further with Nick / other operators.  Basic
    protection should be doable with just a simple PACL - which should
    work at once for both protocols.
 
@@ -618,8 +618,8 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 6.  Musings on further protocol directions in IETF
 
-   [FIXME] To discuss: do we define spheres of influence for SLAAC/RA
-   and DHCPv6, with strictly limited overlap, or do we try to make them
+   FIXME: To discuss: do we define spheres of influence for SLAAC/RA and
+   DHCPv6, with strictly limited overlap, or do we try to make them
    equipotent, with a shared data model for their options ?
 
 7.  Acknowledgements
