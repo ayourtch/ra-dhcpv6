@@ -247,14 +247,12 @@ This creates contention between the proponents of those who want DHCPv6 deal wit
 who think RA is the single possible candidate for that.
 	</t>
 	<t>
-The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares the fate with routing". However, this distinction is merely because of the decision to explicitly keep DHCPv6 away from routing - so can not be considered a true property of the protocol.
+The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares the fate with routing".
+In other words - when you receive an RA, it is always (in the protocol-compliant case) coming from a router. 
+In the case of using DHCPv6, it is not the case.
 	</t>
 	<t>
-brian@innovationslab.net: you do not know that the DHCPv6 message you received came from a
-router or a server.
-	</t>
-	<t>
-[FIXME]: This section needs further debates, clarifications, and a rewrite. I am not sure I correctly captured the essence. The arguments are welcome!
+[FIXME]: This section needs further debates, clarifications, and a rewrite. Discussion welcome.
 	</t>
 	  </section>
           <section anchor="RoutingDiscussion1" title="Discussion 1">
@@ -446,25 +444,14 @@ can run a DHCPv6 server itself with very little problem.
       </section>
       <section anchor="Programming" title="Programming: UDP vs. ICMP">
         <t>
-For a random programmer today, coding a server to receive the data on a UDP socket 
-is a more familiar exercise than working with ICMP. Disclaimer: the value of
-"random" was chosen to be "me" for arbitrary reasons. 
-	</t>
-	<t>
-This point is more of a rathole and a personal preference, probably. 
-[FIXME] In Windows one of the two was way easier to extend than the other, but I do not remember which.
-        </t>
-        <t>
-lorenzo@google.com:  ICMP is harder than UDP to implement; it often requires raw sockets or
+The programming difficulty is a somewhat subjective topic.
+On one hand, one can say ICMP is harder than UDP to implement; it often requires raw sockets or
 kernel collaboration (e.g., on Linux RDNSS information can be read using
-netlink. UDP is much simpler). On the other hand, I think stateful DHCPv6
-is a more complicated protocol to implement than RAs, with more message
-types and so on.
+netlink. UDP is much simpler). On the other hand, stateful DHCPv6 can be arguably 
+a more complicated protocol to implement than RAs, with more message types and so on.
         </t>
         <t>
-jinmei@wide.ad.jp: 
-
-I don't know why Linux uses a non portable API, but I believe
+On the other hand, it could be argued down to a choice of API:
 writing programs handling RA options like RDNSS is no harder than
 writing DHCPv6 client in terms of socket API.  As long as the system
 supports RFC3542 you should be able to write a portable RA "client"
@@ -478,8 +465,11 @@ something like unusual APIs like RFC3542 or some non-portable system
 dependent interface to write a standard-compliant DHCP(v6) client.  
 So, overall, I'd say the programming difficulty regarding UDP (DHCP)
 vs ICMP (RS/RA) is marginal.
-
         </t>
+	<t>
+In summary, it is probably fair to say that the "difficulty" in this context 
+equates to "unfamiliarity" in some respects, and "protocol complexity" in others.
+	</t>
       </section>
       <section anchor="Management" title="Separate vs. unified management">
         <t>
