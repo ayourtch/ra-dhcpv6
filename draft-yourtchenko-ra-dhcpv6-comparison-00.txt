@@ -52,7 +52,7 @@ Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  2
    2.  Comparison . . . . . . . . . . . . . . . . . . . . . . . . . .  2
-     2.1.  Interworking with different L2 topologies  . . . . . . . .  2
+     2.1.  Interworking with different L2 topologies  . . . . . . . .  3
 
 Yourtchenko               Expires May 29, 2014                  [Page 1]
 
@@ -87,18 +87,21 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 1.  Introduction
 
-   IPv4 provided only one way of configuring the addresses: DHCP. Having
-   no choice made the choice simple.  IPv6 provides a second mechanism
-   called SLAAC in addition to using DHCPv6 in a fashion similar to
-   IPv4.  This creates the problem: what is the best ? How do I know
-   which of the two to use ? Since "the best" usually means "the best
-   for me", it is an inherently locally-significant adjective.  A lot of
-   arguments are not taking this into the account, resulting in deadlock
-   situations and mutual frustrations during the discussion.  The goal
-   of this document is dissecting the technical properties of both
-   address configuration mechanisms.  This should hopefully result in a
-   more objective and technical analysis, and allow for a better
-   judgement of which mechanism is "better" in each specific case.
+   IPv4 provided only one way of configuring the addresses and node
+   parameters: DHCP. Having no choice made the choice simple.
+
+   DHCPv6 allows for a similar mode of operation with DHCPv6, but also
+   introduces the mandatory Router Advertisements, which overlap in some
+   functionality with DHCPv6.  This creates the problem: what is the
+   best ? How do I know which of the two to use ? Since "the best"
+   usually means "the best for me", it is an inherently locally-
+   significant adjective.  A lot of arguments are not taking this into
+   the account, resulting in deadlock situations and mutual frustrations
+   during the discussion.  The goal of this document is dissecting the
+   technical properties of both address configuration mechanisms.  This
+   should hopefully result in a more objective and technical analysis,
+   and allow for a better judgement of which mechanism is "better" in
+   each specific case.
 
    The author of the document does not take any sides nor tries to
    promote one approach over the other.  If you, the reader, spot any
@@ -111,14 +114,13 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.  Comparison
 
-2.1.  Interworking with different L2 topologies
-
-
 
 Yourtchenko               Expires May 29, 2014                  [Page 2]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
+
+2.1.  Interworking with different L2 topologies
 
    RA is "server-initiated, send once, receive many, no confirmation"
    abstraction - something that works well on the 10base2-type shared
@@ -169,8 +171,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 2.3.  Client initiated vs.  server initiated
 
-   Despite the division above, RA can be client-initiated, to some
-
 
 
 
@@ -178,6 +178,8 @@ Yourtchenko               Expires May 29, 2014                  [Page 3]
 
 Internet-Draft          RA and DHCPv6 comparison           November 2013
 
+
+   Despite the division above, RA can be client-initiated, to some
    extent, with RS, and DHCPv6 can be server-initiated, to some extent,
    with "Reconfigure" messages.
 
@@ -228,8 +230,6 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    "good" or "bad" will be similar - RA based configuration will be best
    in case the networks are not under administration, and the hosts are
    given a lot of flexibility.
-
-
 
 
 
