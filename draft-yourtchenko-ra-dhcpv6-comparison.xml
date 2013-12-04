@@ -108,6 +108,12 @@ solicited RAs might make a significant portion of your traffic - which, due to a
 difference in modulation, etc. may eat way more bandwidth than if they were sent unicast.
         </t>
       </section>
+      <section anchor="AsymmStd" title="Asymmetric external standards requirements">
+	<t>
+Not all standards reference RA/DHCP equally - e.g. on 3G/LTE the standard
+requires the use of SLAAC (thus, RA).
+	</t>
+      </section>
       <section anchor="AckNoAck" title="Acknowledged vs. Unacknowledged">
         <t>
 DHCPv6 needs at least 2 packets. RA is just one packet.
@@ -522,7 +528,7 @@ data model for their options ?
 Thanks to Ted Lemon for triggering the creation of this document.
         </t>
         <t>
-Thanks to the following people who brought in text or ideas into the document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman, Lorenzo Colitti, Ted Lemon, Ray Hunter.
+Thanks to the following people who brought in text or ideas into the document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian Haberman, Lorenzo Colitti, Ted Lemon, Ray Hunter, Behcet Sarikaya.
         </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
