@@ -3,8 +3,8 @@
 
 Network Working Group                                     A. Yourtchenko
 Internet-Draft                                                     cisco
-Intended status: Informational                         November 27, 2013
-Expires: May 29, 2014
+Intended status: Informational                         December 04, 2013
+Expires: June 05, 2014
 
     A comparison between the DHCPv6  and RA based host configuration
                draft-yourtchenko-ra-dhcpv6-comparison-00
@@ -32,7 +32,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 29, 2014.
+   This Internet-Draft will expire on June 05, 2014.
 
 Copyright Notice
 
@@ -54,26 +54,27 @@ Table of Contents
    2.  Comparison . . . . . . . . . . . . . . . . . . . . . . . . . .  3
      2.1.  Interworking with different L2 topologies  . . . . . . . .  3
 
-Yourtchenko               Expires May 29, 2014                  [Page 1]
+Yourtchenko              Expires June 05, 2014                  [Page 1]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
-     2.2.  Acknowledged vs. Unacknowledged  . . . . . . . . . . . . .  3
-     2.3.  Client initiated vs. server initiated  . . . . . . . . . .  4
-     2.4.  Centralized coordination vs. distributed coordination  . .  4
-     2.5.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
-     2.6.  The amount of server-side state  . . . . . . . . . . . . .  5
-     2.7.  Involvement or not into routing  . . . . . . . . . . . . .  6
-       2.7.1.  Comparison . . . . . . . . . . . . . . . . . . . . . .  6
-       2.7.2.  Discussion 1: On multiple default gateways per segment  6
-       2.7.3.  Discussion 2: Why require an RA if DHCPv6 is more
-               appropriate ?  . . . . . . . . . . . . . . . . . . . .  7
-     2.8.  Server locality  . . . . . . . . . . . . . . . . . . . . .  8
-     2.9.  Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  8
-     2.10. Separate vs. unified management  . . . . . . . . . . . . .  9
-     2.11. Scope of use / Applicability . . . . . . . . . . . . . . .  9
-     2.12. IPAM tools impact comparison . . . . . . . . . . . . . . . 10
-     2.13. Security tools impact comparison . . . . . . . . . . . . . 10
+     2.2.  Asymmetric external standards requirements . . . . . . . .  3
+     2.3.  Acknowledged vs. Unacknowledged  . . . . . . . . . . . . .  3
+     2.4.  Client initiated vs. server initiated  . . . . . . . . . .  4
+     2.5.  Centralized coordination vs. distributed coordination  . .  4
+     2.6.  Single Source of Truth vs. Multiple sources  . . . . . . .  4
+     2.7.  The amount of server-side state  . . . . . . . . . . . . .  5
+     2.8.  Involvement or not into routing  . . . . . . . . . . . . .  6
+       2.8.1.  Comparison . . . . . . . . . . . . . . . . . . . . . .  6
+       2.8.2.  Discussion 1: On multiple default gateways per segment  6
+       2.8.3.  Discussion 2: Why require an RA if DHCPv6 is more
+               appropriate ?  . . . . . . . . . . . . . . . . . . . .  8
+     2.9.  Server locality  . . . . . . . . . . . . . . . . . . . . .  8
+     2.10. Programming: UDP vs. ICMP  . . . . . . . . . . . . . . . .  8
+     2.11. Separate vs. unified management  . . . . . . . . . . . . .  9
+     2.12. Scope of use / Applicability . . . . . . . . . . . . . . .  9
+     2.13. IPAM tools impact comparison . . . . . . . . . . . . . . . 10
+     2.14. Security tools impact comparison . . . . . . . . . . . . . 10
    3.  Arguments for running only a single protocol . . . . . . . . . 10
      3.1.  Support and Security Complexity  . . . . . . . . . . . . . 10
    4.  Differences between different types of network operators . . . 11
@@ -110,15 +111,15 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    instance where this is not the case, please inform the author so this
    could be corrected.
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 
 
 
 
-Yourtchenko               Expires May 29, 2014                  [Page 2]
+Yourtchenko              Expires June 05, 2014                  [Page 2]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
@@ -152,7 +153,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    your traffic - which, due to a difference in modulation, etc.  may
    eat way more bandwidth than if they were sent unicast.
 
-2.2.  Acknowledged vs.  Unacknowledged
+2.2.  Asymmetric external standards requirements
+
+   Not all standards reference RA/DHCP equally - e.g.  on 3G/LTE the
+   standard requires the use of SLAAC (thus, RA).
+
+2.3.  Acknowledged vs.  Unacknowledged
 
    DHCPv6 needs at least 2 packets.  RA is just one packet.
 
@@ -165,25 +171,23 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    multiple packets exchange does not obviate the need for the securing
    DHCPv6 in a similar fashion.
 
+
+
+
+Yourtchenko              Expires June 05, 2014                  [Page 3]
+
+Internet-Draft          RA and DHCPv6 comparison           December 2013
+
+
    There is one additional reason for the DHCPv6 to be slower.  RFC3315
    states: "A client MUST collect Advertise messages for the first RT
    seconds, unless it receives an Advertise message with a preference
-
-
-
-
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 3]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
    value of 255.".  Since most of the time the preference in DHCPv6
    messages is not 255, the compliant nodes will be at least 1 second (+
    /- up to 0.1 sec) slower than those using RA - as RT is calculated
    based on SOL_TIMEOUT value.
 
-2.3.  Client initiated vs.  server initiated
+2.4.  Client initiated vs.  server initiated
 
    Despite the division above, RA can be client-initiated, to some
    extent, with RS, and DHCPv6 can be server-initiated, to some extent,
@@ -204,7 +208,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    L2 media interaction concerns might affect and even cancel out this
    property, depending on the environment.
 
-2.4.  Centralized coordination vs.  distributed coordination
+2.5.  Centralized coordination vs.  distributed coordination
 
    RA, due to its "send once, receive many" nature, in its pure form
    necessarily can not dictate a per-client settings, but rather can
@@ -225,18 +229,17 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    That's why the title of this section does not use the word "control"
    but rather uses the word "coordination".
 
-2.5.  Single Source of Truth vs.  Multiple sources
+2.6.  Single Source of Truth vs.  Multiple sources
+
+
+
+Yourtchenko              Expires June 05, 2014                  [Page 4]
+
+Internet-Draft          RA and DHCPv6 comparison           December 2013
+
 
    The DHCPv6 model requires the client to choose only one of the
    advertise messages that it receives.  When using RA, the client can
-
-
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 4]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
    combine information from multiple sources.
 
    This section is quite intertwined with the previous one (distributed/
@@ -264,7 +267,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    measures in place so that a malicious host did not impersonate a
    router.
 
-2.6.  The amount of server-side state
+2.7.  The amount of server-side state
 
    RA in its pure form is inherently stateless - there is no per-client
    information stored on the sending router.  This eases the things like
@@ -278,32 +281,31 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    FIXME: Further experimentation needed to test how it actually works
    in real life implementations.
 
+
+
+
+
+
+
+
+
+
+
+
+Yourtchenko              Expires June 05, 2014                  [Page 5]
+
+Internet-Draft          RA and DHCPv6 comparison           December 2013
+
    jinmei@wide.ad.jp: If you mean the Delayed Authentication Protocol by
    DHCPv6 authentication, the WIDE DHCPv6 supports it: http://
-
-
-
-
-
-
-
-
-
-
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 5]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
    sourceforge.net/projects/wide-dhcpv6/ although I myself have only
    used it in testing.  I heard some other vendors implemented it, too.
    (And, for that matter, it also supports the Information Refresh Time
    option (RFC4242)).
 
-2.7.  Involvement or not into routing
+2.8.  Involvement or not into routing
 
-2.7.1.  Comparison
+2.8.1.  Comparison
 
    An RA-based protocol interaction may influence host's routing.  A
    DHCPv6-based interaction today can not influence the host's routing -
@@ -341,7 +343,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    FIXME: This section needs further debates, clarifications, and a
    rewrite.  Discussion welcome.
 
-2.7.2.  Discussion 1: On multiple default gateways per segment
+2.8.2.  Discussion 1: On multiple default gateways per segment
 
 
 
@@ -349,11 +351,9 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
 
 
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 6]
+Yourtchenko              Expires June 05, 2014                  [Page 6]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 
    The premise that many people in the IETF seem to be working on is
@@ -406,15 +406,17 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    their eyes and thinking: "yeah, and 640k was enough for everyone".
    Just bear in mind that added complexity is not necessarily a good
    thing.  The support costs are high and the return on effort is
+
+
+
+
+Yourtchenko              Expires June 05, 2014                  [Page 7]
+
+Internet-Draft          RA and DHCPv6 comparison           December 2013
+
    dubious at best.  IOW, the IETF is optimising a corner case.
 
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 7]
-
-Internet-Draft          RA and DHCPv6 comparison           November 2013
-
-2.7.3.  Discussion 2: Why require an RA if DHCPv6 is more appropriate ?
+2.8.3.  Discussion 2: Why require an RA if DHCPv6 is more appropriate ?
 
    The question is why would someone use RA for multiple gateway
    announcement when you'll get much better operational performance from
@@ -454,7 +456,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    The ability to automate the configuration of DHCP does not inherently
    make DHCP better than RAs.
 
-2.8.  Server locality
+2.9.  Server locality
 
    Both DHCPv6 and RA are inherently link-local mechanisms, however
    DHCPv6 has a means to "jump" over multiple hops by use of the relays.
@@ -464,14 +466,12 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    almost any router today can run a DHCPv6 server itself with very
    little problem.
 
-2.9.  Programming: UDP vs.  ICMP
+2.10.  Programming: UDP vs.  ICMP
 
 
-
-
-Yourtchenko               Expires May 29, 2014                  [Page 8]
+Yourtchenko              Expires June 05, 2014                  [Page 8]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 
    The programming difficulty is a somewhat subjective topic.  On one
@@ -500,7 +500,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    context equates to "unfamiliarity" in some respects, and "protocol
    complexity" in others.
 
-2.10.  Separate vs.  unified management
+2.11.  Separate vs.  unified management
 
    If DHCPv4 and routing is managed by the different groups in the
    organization, then conceivably the "server" people will not like to
@@ -513,7 +513,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    held on the server - thus the agreement would never be achieved
    because they are arguing about different things.
 
-2.11.  Scope of use / Applicability
+2.12.  Scope of use / Applicability
 
    Another, somewhat philosophical question: what information should be
    sent by the RA, and what information is appropriate to be sent by
@@ -528,9 +528,9 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    POP, IMAP server) information as an example of something that would
    not be DHCP configured).
 
-Yourtchenko               Expires May 29, 2014                  [Page 9]
+Yourtchenko              Expires June 05, 2014                  [Page 9]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 
    Another, IETF-specific approach about what can be configured with
@@ -547,7 +547,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    understand: (1) is there a strict division of functions between the
    RA and DHCP (2) should there be a strict division of function ?
 
-2.12.  IPAM tools impact comparison
+2.13.  IPAM tools impact comparison
 
    This is an indirect dependency, resulting in the centralized vs.
    distributed nature of DHCPv6 vs.  RA. IPAM tools integration with
@@ -562,7 +562,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    This said, until very recently DHCPv6 replaced the MAC address with
    DUID - which created its own set of challenges.
 
-2.13.  Security tools impact comparison
+2.14.  Security tools impact comparison
 
    From Brian Carpenter.  For further discussion.
 
@@ -587,9 +587,9 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    work at once for both protocols.
 
 
-Yourtchenko               Expires May 29, 2014                 [Page 10]
+Yourtchenko              Expires June 05, 2014                 [Page 10]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 
 4.  Differences between different types of network operators
@@ -628,7 +628,7 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
 
    Thanks to the following people who brought in text or ideas into the
    document: Bernie Volz, Brian Carpenter, Nick Hilliard, Brian
-   Haberman, Lorenzo Colitti, Ted Lemon, Ray Hunter.
+   Haberman, Lorenzo Colitti, Ted Lemon, Ray Hunter, Behcet Sarikaya.
 
 8.  IANA Considerations
 
@@ -646,9 +646,9 @@ Internet-Draft          RA and DHCPv6 comparison           November 2013
    [RFC1149]  Waitzman, D., "Standard for the transmission of IP
               datagrams on avian carriers", RFC 1149, April 1990.
 
-Yourtchenko               Expires May 29, 2014                 [Page 11]
+Yourtchenko              Expires June 05, 2014                 [Page 11]
 
-Internet-Draft          RA and DHCPv6 comparison           November 2013
+Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 
 Author's Address
@@ -704,4 +704,4 @@ Author's Address
 
 
 
-Yourtchenko               Expires May 29, 2014                 [Page 12]
+Yourtchenko              Expires June 05, 2014                 [Page 12]
