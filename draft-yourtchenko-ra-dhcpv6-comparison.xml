@@ -121,6 +121,7 @@ DHCPv6 needs at least 2 packets. RA is just one packet.
 	<t>
 RA strength: it is quicker; RA weakness: you have to take care that it is a legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
 <!-- You mention this as a weakness of RA, but below you do the same for DHCPv6. Wouldn't it be better to mention it as a weakness of both? -->
+<!-- FIXME: talk about the ORO somewhere here ? -->
 	</t>
 	<t>
 DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. The necessity for the multiple packets exchange does not obviate the need for the securing DHCPv6 in a similar fashion.
