@@ -116,7 +116,7 @@ requires the use of SLAAC (thus, RA).
       </section>
       <section anchor="AckNoAck" title="Acknowledged vs. Unacknowledged">
         <t>
-DHCPv6 needs at least 2 packets. RA is just one packet.
+DHCPv6 needs at least 2 packets (If Rapid Commit is being used. If it is not used, then 4 packets). RA is just one packet.
 	</t>
 	<t>
 RA strength: it is quicker; RA weakness: you have to take care that it is a legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
