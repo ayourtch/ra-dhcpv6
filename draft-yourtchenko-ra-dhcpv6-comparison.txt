@@ -91,7 +91,7 @@ Table of Contents
    IPv4 provided only one way of configuring the addresses and node
    parameters: DHCP.  Having no choice made the choice simple.
 
-   DHCPv6 allows for a similar mode of operation with DHCPv6, but also
+   IPv6 allows for a similar mode of operation with DHCPv6, but also
    introduces the mandatory Router Advertisements, which overlap in some
    functionality with DHCPv6 and replace some functionality of DHCPv4.
    This creates the problem: what is the best?  How do I know which of
@@ -135,10 +135,11 @@ Internet-Draft          RA and DHCPv6 comparison           December 2013
 
 2.2.  Acknowledged vs. Unacknowledged
 
-   DHCPv6 needs at least 2 apackets.  RA can potentially work with just
+   DHCPv6 needs at least 2 packets (If Rapid Commit is being used.  If
+   it is not used, then 4 packets).  RA can potentially work with just
    one packet - however the operation of it will be not optimal.
 
-   RA strength: it is quicker;
+   RA strength: it is quicker.
 
    DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6
    minus: takes at least 1 RTT to the server.
@@ -160,7 +161,6 @@ Internet-Draft          RA and DHCPv6 comparison           December 2013
    If we treat these as "nudge" messages, the behavior of the sending
    and receiving parties is similar - the "nudge" message causes the
    orderly protocol exchange to occur before the due time.
-
 
 
 
