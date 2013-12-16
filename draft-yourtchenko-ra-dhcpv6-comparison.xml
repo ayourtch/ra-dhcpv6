@@ -82,51 +82,29 @@ could be corrected.
       </t>
     </section>
     <section anchor="Comparison" title="Comparison">
-      <section anchor="L2TopologyInterworking" title="Interworking with different L2 topologies">
-        <t>
-RA is a "server-initiated, send once, receive many, no confirmation" abstraction - something 
-that works well on a 10base2-type shared bus and even on today's wired
-ethernet, but looks quite miserable on WiFi media without special tricks (802.11 provides 
-reliable delivery for unicast frames, and does not provide one
-for multicast frames, also the physical speeds are different and even 
-the contention management and the speed/modulation can be different as well).
-        </t>
-        <t>
-DHCPv6 is a "client-initiated, send once, receive once, confirmation" abstraction. 
-This may be wasteful on low-bandwidth links that provide a bus topology, but maps
-extremely well onto scenarios like WiFi - as it allows to maintain somewhat 
-familiar mode of operation to wired ethernet.
-        </t>
-        <t>
-This is where the peer-to-peer, acknowledged nature of DHCPv6 may be beneficial - on a crowded large-scale WiFi, 
-without special tricks to ensure the reliable delivery of multicast packets, you simply will not get SLAAC
-working because the multicast RAs will get crunched by the interference.
-        </t>
-        <t>
-Alternatively, in a very mobile environment and a RFC-compliant router, multicast 
-solicited RAs might make up a significant portion of your traffic - which, due to a
-difference in modulation, etc. may eat much more bandwidth than if they were sent unicast.
-        </t>
-      </section>
-      <section anchor="AsymmStd" title="Asymmetric external standards requirements">
+      <section anchor="AsymmStd" title="Asymmetric standards requirements">
 	<t>
 Not all standards reference RA/DHCP equally - e.g. on 3G/LTE the standard
 requires the use of SLAAC (thus, RA).
 	</t>
+	<t>
+RFC 6434 in section 5.9.2 "IPv6 Stateless Address Autoconfiguration" defines
+SLAAC a MUST, while DHCPv6 is defined as SHOULD by sections 7.2.1, 
+"Other Configuration Information", and section 5.9.5, "Stateful Address
+Autoconfiguration (DHCPv6)".
+	</t>
       </section>
       <section anchor="AckNoAck" title="Acknowledged vs. Unacknowledged">
         <t>
-DHCPv6 needs at least 2 packets. RA is just one packet.
+DHCPv6 needs at least 2 apackets. RA can potentially work with just one packet - however the operation of it will be not optimal.
 	</t>
 	<t>
-RA strength: it is quicker; RA weakness: you have to take care that it is a legitimate router and not your evil neighbor sending you the RAs you take the configuration from.
-<!-- You mention this as a weakness of RA, but below you do the same for DHCPv6. Wouldn't it be better to mention it as a weakness of both? -->
+RA strength: it is quicker; 
 <!-- FIXME: talk about the ORO somewhere here ? -->
 	</t>
 	<t>
-DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. The necessity for the multiple packets exchange does not obviate the need for the securing DHCPv6 in a similar fashion.
-<!-- See comment above -->
-        </t>
+DHCPv6 Plus: works well in the noisy/lossy environments; DHCPv6 minus: takes at least 1 RTT to the server. 
+	</t>
 	<t>
 There is one additional reason for DHCPv6 to be slower. RFC3315 states: "A client MUST collect Advertise messages for the first RT seconds,
 unless it receives an Advertise message with a preference value of 255.". Since most of the time the preference in DHCPv6 messages is not 255,
@@ -171,7 +149,7 @@ addresses - e.g. it's perfectly possible to statically configure a different add
 we only talk about homogenous standards-compliant well-behaved hosts for simplicity sake).
 	</t>
 	<t>
-That's why the title of this section does not use the word "control" but rather uses the word "coordination".
+That's why the title of this section does not use the word "control" but rather uses the word "coordination". 
         </t>
       </section>
       <section anchor="SingleSourceOfTruth" title="Single Source of Truth vs. Multiple sources">
@@ -180,17 +158,14 @@ The DHCPv6 model requires the client to choose only one of the advertise message
 RA, the client can combine information from multiple sources.
 	</t>
 	<t>
-This section is quite intertwined with the previous one (distributed/centralized), and the reasoning for when 
-a particular protocol is "good" or "bad" will be similar - RA based configuration will be best in case the networks
-are not under administration, and the hosts are given a lot of flexibility. 
+RA based configuration gives hosts a lot of flexibility.
 	</t>
 	<t>
-On the other hand, DHCPv6 will be useful for cases where there is a need to tightly control the behavior
-of the hosts and have a highly predictable configuration of the network as a whole. Of course, as a tradeoff such
-predictability brings potentially increased fragility. <!-- Although you decribed RA as fragile as well, on WiFi -->
+On the other hand, DHCPv6 aims to tightly control the behavior
+of the hosts and have a highly predictable configuration of the network as a whole. 
 	</t>
 	<t>
-An example where this difference might be crucial is a segment with two servers, aware of each other's state.
+An example where this difference might be crucial is a segment with two routers, aware of each other's state.
 If server A goes down, then server B, when using RA-based mechanism, can just send a message with a lifetime of zero.
 The DHCPv6-based implementation of this scenario would need to be more involved - if the client trusted the server A
 to begin with, it will not listen to notifications from B - so B will need to spoof A in some way.
@@ -209,10 +184,14 @@ This eases things like redundancy and failover compared to DHCPv6.
 	<t>
 DHCPv6 in its stateless incarnation also does not keep the state - 
 however, in the scenario of the DHCPv6 server sending the RECONFIGURE message to the client,
-a DHCPv6 server must keep some knowledge of the client - which means it might need to keep some state.
+a DHCPv6 server must keep some knowledge of the client - which means it might need to keep some state. 
+Thus if there is a requirement to keep the ability for the DHCPv6 server infrastructure to retain the ability of sending the RECONFIGURE message, this state needs to be kept across the server crashes and reboots.
 	</t>
 	<t>
 FIXME: Further experimentation needed to test how it actually works in real life implementations.
+        </t>
+	<t>
+Also, stateless DHCPv6 can not assign addresses to hosts.
         </t>
 	<t>
 jinmei@wide.ad.jp:
@@ -229,160 +208,19 @@ option (RFC4242)).
 	</t>
       </section>
       <section anchor="Routing" title="Involvement or not into routing">
-          <section anchor="Routing1" title="Comparison">
 	<t>
-An RA-based protocol interaction may influence a host's routing. 
-A DHCPv6-based interaction today can not influence the host's routing - 
-DHCPv6 was specifically denied any and all involvement in routing.
-	</t>
-        <t>
-RAs as a mechanism, due to its "multiple sources of truth" nature, 
-can allow an unsophisticated form of routing resiliency for the hosts.
-	</t>
-	<t>
-While architecturally "pure", the reliability and timing 
-of the routing resiliency provided by RAs is far below 
-those achieved by FHRP protocols - which makes the "distributed routing for unsophisticated hosts" 
-property unusable in most networks. 
+RAs have to be sent out by the routers themselves.
+This makes them more robust to misconfiguration: 
+in DHCP, if server is several hops away it will not know what
+routers are on the link - requiring manual entry and potential mistakes.
+It is true that this does not seem to happen often in IPv4, but we can
+assume it is the case because a typo results in an immediate hard failure
+which gets fixed very quick. Fate sharing avoids this problem entirely.
 	</t>
 	<t>
-With this, the role of the RAs is reduced to just supplying the default gateway (and maybe some static routes)
-<!-- In terms of routing yes, but you may create the impression that RAs are not useful at all here -->
-- something that is successfully done by DHCPv4 today. This creates an impression that adding this 
-functionality to DHCPv6 would allow to get rid of RAs completely for that use case.
+To a large extent, RAs share fate with the routers that send them; for example, if a router loses power, then it will stop sending RAs. 
+It's true that we address this in IPv4, by using protocols like VRRP.
 	</t>
-	<t>
-However, the "single source of truth" nature of DHCPv6 prevents the successful operation in case of 
-multiple servers on the segment supplying different information. RAs in this case may still work.
-	</t>
-	<t>
-Some consider the inability to support this scenario crucial, and some think it is not useful. 
-This creates contention between the proponents of those who want DHCPv6 to deal with routing, and those
-who think RA is the single possible candidate for that.
-	</t>
-	<t>
-The other aspect is that because RA ties in the routing and addressing information, one can say "RA shares fate with routing".
-In other words - when you receive an RA, it is always (in the protocol-compliant case) coming from a router. 
-In the case of using DHCPv6, this is not the case.
-	</t>
-	<t>
-FIXME: This section needs further debates, clarifications, and a rewrite. Discussion welcome.
-	</t>
-	  </section>
-	  
-	  <!-- You might want a good intro here, the following sections scared me! ;-) -->
-	  
-          <section anchor="RoutingDiscussion1" title="Discussion 1: On multiple default gateways per segment">
-	<t>
-The premise that many people in the IETF seem to be working on is that the
-typical - or even a common - deployment case of IPv6 will involve multiple
-routers per LAN segment.  I say this because every time the issue of DHCP
-providing a default gateway comes up, one of the main arguments is
-that it will break the multiple-routers-per-LAN-segment scenario. 
-The operational reality is that multiple gateways on the same LAN is 
-going to be the rare exception rather
-than the rule - outside truly large operations (i.e. 10s of thousands of users).
-	</t>
-	<t>
-Many consciously choose for L2 interfaces (with HSRP/VRRP) isolation LANs
-between service providers precisely because L3 is more complex to debug
-and engineer across an administrative boundary. Even agreeing on an IGP
-can be tricky, never mind worrying about route flapping or
-redistribution loops. Experience has shown that HSRP/VRRP + static
-routes in a simple active/standby construction can deliver extremely
-robust SLA KPI's.
-
-Secondly, practical deployment of L3 routing protocols on end hosts was
-a no-go in IPv4.
-	</t>
-	<t>
-Service providers will attempt to avoid multiple gateways per network because it
- makes their deployment scenarios more complicated and provides no extra
- value.  For server / host farms, service providers like FHRP with tight
- timers because it gives control of onward connectivity.
-	</t>
-	<t>
- Regarding RA for routing and DHCP for addressing, what people care about is
- connectivity.  What I need as an operator is a protocol (preferably a
- single protocol because that is simpler) which will enable my boxes to gain
- the connectivity they need.  Whether you call this routing or providing a
- default gateway, I don't much mind.
-
- Look, there's too much ideology going on here.  The IETF is being dazzled
- by the sight of multiple lan segments and multiple egress gateways without
- realising that these are the minority configuration.
- 
- All this effort is
- going into optimising ipv6 address / LAN autoconfiguration for these
- unusual scenarios without heeding the sober reality that most people,
-service providers and enterprises are only ever going to want to have a
- single default gateway per LAN segment, and that by far the most common deployment
- scenario will be a single LAN segment per organisation.
-
-	</t>
-	<t>
-Wireless?  My smartphone already has two radios and a physical interface, connected
-to multiple providers.
-How exactly do you then configure a "single default gateway per LAN segment"
-(without draft-troan-homenet-sadr-01)
-	</t>
-	<t>
- I'm aware that this viewpoint will be regarded as retrograde, and that a
- bunch of people on this list will probably sit there, rolling their eyes
- and thinking: "yeah, and 640k was enough for everyone".
-
- Just bear in mind that added complexity is not necessarily a good thing.
- The support costs are high and the return on effort is dubious at best.
- IOW, the IETF is optimising a corner case. 
-	</t>
-
-	  </section>
-          <section anchor="RoutingDiscussion2" title="Discussion 2: Why require an RA if DHCPv6 is more appropriate ?">
-	<t>
-The question is why would someone use RA for multiple gateway announcement
-when you'll get much better operational performance from a FHRP + single
-gateway address?  And why use RA for addressing when you'll get finer
-grained operational host control using DHCPv6 ?  
-	</t>
-	<t>
-You can have client specific RAs that solve that problem. This is not a missing capability that
-duplicating RA functionality in DHCPv6 would then provide.
-	</t>
-	<t>
-Or when you need to use DHCPv6
-anyway in order to make your hosts do what they need to do?  Or on server
-farms when most of your hosts are statically addressed and it doesn't make
-sense to have multiple gateways with different addresses - and you'll get
-better uptime by not using RA?
-
-I'm not proposing to take away the option of using RAs if that's what you
-want to do.  I'm only suggesting that for many situations, it makes more
-sense to have a single static gateway address (optionally with multiple
-routers using a FHRP if you need reliability) and that consequently the
-idea of periodically announcing a selection of arbitrary gateways via RA is
-operationally second rate.
-	</t>
-	<t>
-I would really like to know specific details of these many situations, 
-and what specific benefits switching off RAs would have. 
-I have been in many situations in many networks, and when I consider 
-my IPv4 experience (and also compare it to my Novell IPX and 
-Appletalk experiences), I see a lot of value in having
-RAs provide default gateway(s) (VRRP/HSRP or not) information and 
-other layer 3 parameters to directly attached hosts from the directly
-attached router(s). This is in comparison with the IPv4 alternative 
-effort of enabling and configuring a heavier and more resource consuming
-stateful DHCP server on either the first hop routers, or enabling
-DHCP relays and then having to have a redundant DHCP
-infrastructure somewhere else in the network.
-
-It could be argued that DHCP could be enabled and configured
-by default, but that is also obviously the case with RAs, and
-they have been enabled by default
-since day one. The ability to automate the configuration
-of DHCP does not inherently make DHCP better than RAs.
-	</t>
-	  </section> <!-- Discussion about routing -->
       </section>
       <section anchor="ServerLocality" title="Server locality">
         <t>
@@ -422,46 +260,6 @@ vs ICMP (RS/RA) is marginal.
 	<t>
 In summary, it is probably fair to say that the "difficulty" in this context 
 equates to "unfamiliarity" in some respects, and "protocol complexity" in others.
-	</t>
-      </section>
-      <section anchor="Management" title="Separate vs. unified management">
-        <t>
-If DHCPv4 and routing is managed by different groups in the organization, 
-then conceivably the "server" people will not like to have their work go away and
-similarly the "router" guys are happy to get rid of yet another point of coordination 
-and argument. 
-	</t>
-	<t>
-This is where the "I hate $protocol" could definitely pop up - because for one
-side it may be the media interworking that is a crucial factor, while for 
-the other side it is the amount of state held on the server - thus agreement would 
-never be achieved because they are arguing about different things.
-        </t>
-      </section>
-      <section anchor="ScopeOfUse" title="Scope of use / Applicability">
-	<t>
-Another, somewhat philosophical question: what information should be sent by an RA, 
-and what information is appropriate to be sent by DHCP, and which information should not be sent by either? 
-(Of course, this assumes such a division exists.)
-The currently held wisdom is as follows:
-	</t>
-	<t>
-DHCP SHOULD configure the network resources available for the client device to use (i.e., things needed to provide network connectivity and access to
-that network's services). It should not configure user specific services (i.e., there was some discussion about email (SMTP, POP, IMAP server) information
-as an example of something that would not be DHCP configured).
-	</t>
-	<t>
-Another, IETF-specific, approach about what can be configured with DHCP: 
-if the protocol is or was in the Internet area, it's probably something you can configure with DHCP; 
-if it's not, think carefully before using DHCP to configure it.  
-
-This leaves out a _lot_ of stuff that has options in DHCPv4.   
-But I (Ted Lemon) can't think of anything it excludes that I'd want to keep around.   
-Of course, Mobile IPv6 is an Internet area protocol, and it's not entirely clear to me 
-that it's configurable via DHCP, although there exist DHCP options to configure it.
-	</t>
-	<t>
-FIXME: AY: The above section needs more work and discussion to understand: (1) is there a strict division of functions between the RA and DHCP (2) should there be a strict division of function ? 
 	</t>
       </section>
       <section anchor="AddrManagement" title="IPAM tools impact comparison">
