@@ -60,7 +60,7 @@ and highlights the strong and weak sides of both protocols for each scenario.
 IPv4 provided only one way of configuring the addresses and node parameters: DHCP. Having no choice made the choice simple.
       </t>
       <t>
-DHCPv6 allows for a similar mode of operation with DHCPv6, but also introduces the mandatory Router Advertisements, which
+IPv6 allows for a similar mode of operation with DHCPv6, but also introduces the mandatory Router Advertisements, which
 overlap in some functionality with DHCPv6 and replace some functionality of DHCPv4.
 This creates the problem: what is the best? How do I know which of the two to use? Since "the best" 
 usually means "the best for me", it is an inherently locally-significant adjective. A lot of arguments are
@@ -96,10 +96,11 @@ Autoconfiguration (DHCPv6)".
       </section>
       <section anchor="AckNoAck" title="Acknowledged vs. Unacknowledged">
         <t>
-DHCPv6 needs at least 2 apackets. RA can potentially work with just one packet - however the operation of it will be not optimal.
+DHCPv6 needs at least 2 packets (If Rapid Commit is being used. If it is not used, then 4 packets). 
+RA can potentially work with just one packet - however the operation of it will be not optimal.
 	</t>
 	<t>
-RA strength: it is quicker; 
+RA strength: it is quicker. 
 <!-- FIXME: talk about the ORO somewhere here ? -->
 	</t>
 	<t>
